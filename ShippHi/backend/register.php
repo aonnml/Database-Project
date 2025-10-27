@@ -1,5 +1,5 @@
 <?php
-$servername = "mysql-db";
+$servername = "db";
 $username = "admin";
 $password = "admin1234";
 $dbname = "shipphi";
@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 
 $name = $_POST['name'];
 $lastname = $_POST['lastname'];
-$address = $_POST['address'];
+//$address = $_POST['address'];
 $email = $_POST['email'];
 $password_plain = $_POST['password'];
 
@@ -24,8 +24,8 @@ if ($result->num_rows > 0) {
 } else {
     $password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
 
-    $sql = "INSERT INTO users (name, lastname, address, email, password)
-            VALUES ('$name', '$lastname', '$address', '$email', '$password_hashed')";
+    $sql = "INSERT INTO users (name, lastname, email, password)
+            VALUES ('$name', '$lastname', '$email', '$password_hashed')";
 
     if ($conn->query($sql) === TRUE) {
         echo "<script>alert('Register successful!'); window.location.href='../login.html';</script>";
