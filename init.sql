@@ -40,9 +40,12 @@ CREATE TABLE IF NOT EXISTS category(
 CREATE TABLE IF NOT EXISTS product (
     id  INT AUTO_INCREMENT PRIMARY KEY,
     categoryId INT,
-    name VARCHAR(50) NOT NULL,
+    name VARCHAR(150) NOT NULL,
     price INT NOT NULL,
     size VARCHAR(10),
+    description text,
+    stock INT NOT NULL DEFAULT 0,
+    image VARCHAR(255),
     FOREIGN KEY (categoryId) REFERENCES category(id)
 );
 
@@ -60,7 +63,7 @@ CREATE TABLE IF NOT EXISTS review(
     productId INT,
     rate FLOAT NOT NULL,
     review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    description VARCHAR(100),
+    description text,
     FOREIGN KEY (userId) REFERENCES users(id),
     FOREIGN KEY (productId) REFERENCES product(id)
 );

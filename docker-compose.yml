@@ -5,6 +5,7 @@ services:
     container_name: web-server
     volumes:
       - ./ShippHi:/var/www/html
+      - ./ShippHi/uploads:/var/www/html/uploads
     ports:
       - "8080:80"
     depends_on:

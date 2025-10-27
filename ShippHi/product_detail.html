@@ -5,30 +5,59 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail - Shipp Hi</title>
   <link rel="stylesheet" href="css/product.css">
+  <style>
+    body { font-family: sans-serif; background: #f9f9f9; padding: 40px; }
+    .container { max-width: 800px; margin: auto; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .img-box img { width: 100%; max-width: 350px; border-radius: 10px; }
+    .details { padding: 20px; }
+    .price { font-size: 1.4em; color: #007bff; margin: 10px 0; }
+    .back-btn { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
+    .back-btn:hover { background: #333; }
+  </style>
 </head>
 <body>
-  <div id="detail"></div>
-  <button onclick="history.back()">← Back</button>
+  <div class="container">
+    <button class="back-btn" onclick="history.back()">← Back</button>
+    <div class="product">
+      <div class="img-box">
+        <img id="product-image" src="" alt="Product Image">
+      </div>
+      <div class="details">
+        <h2 id="product-name"></h2>
+        <p class="price" id="product-price"></p>
+        <p><strong>Size:</strong> <span id="product-size"></span></p>
+        <p><strong>Stock:</strong> <span id="product-stock"></span></p>
+        <p><strong>Description:</strong></p>
+        <p><strong>Category:</strong> <span id="product-category"></span></p>
+        <p id="product-description"></p>
+      </div>
+    </div>
+  </div>
 
   <script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
 
-  fetch(`backend/product_detail.php?id=${id}`)
-    .then(res => res.json())
-    .then(data => {
-      const div = document.getElementById('detail');
-      if (data.error) {
-        div.innerHTML = `<h2>${data.error}</h2>`;
-      } else {
-        div.innerHTML = `
-          <h2>${data.name}</h2>
-          <p><b>Category:</b> ${data.category}</p>
-          <p><b>Price:</b> ${data.price} ฿</p>
-          <p><b>Size:</b> ${data.size || '-'}</p>
-        `;
-      }
-    });
+    fetch(`backend/product_detail.php?id=${id}`)
+      .then(res => res.json())
+      .then(p => {
+        if (p.error) {
+          document.body.innerHTML = `<h2 style="color:red; text-align:center;">${p.error}</h2>`;
+          return;
+        }
+
+        document.getElementById('product-name').innerText = p.name;
+        document.getElementById('product-price').innerText = `${p.price} ฿`;
+        document.getElementById('product-size').innerText = p.size || '-';
+        document.getElementById('product-stock').innerText = p.stock;
+        document.getElementById('product-description').innerText = p.description || 'No description available.';
+        document.getElementById('product-image').src = p.image ? p.image : 'images/no-image.png';
+        document.getElementById('product-category').innerText = p.category || '-';
+      })
+      .catch(err => {
+        document.body.innerHTML = `<h2 style="color:red; text-align:center;">Error loading product detail</h2>`;
+        console.error(err);
+      });
   </script>
 </body>
 </html>
