@@ -1,37 +1,39 @@
 <?php
-$servername = "db";
-$username = "admin";
-$password = "admin1234";
-$dbname = "shipphi";
+require_once 'config.php';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+// รับค่าจากฟอร์ม
+$name = $_POST['name'] ?? '';
+$lastname = $_POST['lastname'] ?? '';
+$address = $_POST['address'] ?? '';
+$phoneNum = $_POST['phoneNum'] ?? '';
+$email = $_POST['email'] ?? '';
+$password_plain = $_POST['password'] ?? '';
 
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// เช็คอีเมลซ้ำ
+$check_sql = "SELECT id FROM users WHERE email = ?";
+$stmt = $conn->prepare($check_sql);
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
+
+if ($stmt->num_rows > 0) {
+    echo "<script>alert('This email is already registered!'); window.history.back();</script>";
+    exit;
 }
 
-$name = $_POST['name'];
-$lastname = $_POST['lastname'];
-//$address = $_POST['address'];
-$email = $_POST['email'];
-$password_plain = $_POST['password'];
+// Hash password
+$password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
 
-$check_sql = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($check_sql);
+// บันทึกข้อมูล
+$sql = "INSERT INTO users (name, lastname, address, phoneNum, email, password)
+        VALUES (?, ?, ?, ?, ?, ?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ssssss", $name, $lastname, $address, $phoneNum, $email, $password_hashed);
 
-if ($result->num_rows > 0) {
-    echo "<script>alert('This email is already registered. Please use another email.'); window.history.back();</script>";
+if ($stmt->execute()) {
+    echo "<script>alert('Register successful!'); window.location.href='../product.html';</script>";
 } else {
-    $password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
-
-    $sql = "INSERT INTO users (name, lastname, email, password)
-            VALUES ('$name', '$lastname', '$email', '$password_hashed')";
-
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>alert('Register successful!'); window.location.href='../login.html';</script>";
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+    echo "Error: " . $stmt->error;
 }
 
 $conn->close();

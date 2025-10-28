@@ -4,21 +4,51 @@
   <meta charset="UTF-8">
   <title>Products</title>
   <link rel="stylesheet" href="css/product.css">
+  <script src="js/header.js" defer></script>
 </head>
 <body>
 
-  <h1>🛍️ Product List</h1>
+  <!-- Top Bar -->
+  <header class="topbar">
+  <div class="topbar__inner">
+
+    <!-- Left: Logo -->
+    <a href="home.html" class="topbar__brand">
+      <span class="topbar__title">SHIPP HI</span>
+    </a>
+
+    <!-- Right: Menu -->
+    <div class="topbar__actions">
+      <button class="menu-btn" id="menuBtn">
+        <svg class="menu-icon" viewBox="0 0 24 24">
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <line x1="3" y1="12" x2="21" y2="12"/>
+          <line x1="3" y1="18" x2="21" y2="18"/>
+        </svg>
+      </button>
+
+      <div class="profile-menu" id="profileMenu" hidden>
+        <a href="profile.html">My Profile</a>
+        <hr>
+        <a href="backend/logout.php" class="danger">Sign out</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+  <h1>Product List</h1>
 
   <div class="category-bar">
-    <button class="active" onclick="filterCategory('all')">All</button>
-    <button onclick="filterCategory('Home')">Home</button>
-    <button onclick="filterCategory('Garden')">Garden</button>
-    <button onclick="filterCategory('Fashion')">Fashion</button>
-    <button onclick="filterCategory('Makeup')">Makeup</button>
-    <button onclick="filterCategory('Electronic')">Electronic</button>
-    <button onclick="filterCategory('Health Care')">Health Care</button>
-    <button onclick="filterCategory('Food')">Food</button>
-    <button onclick="filterCategory('Education')">Education</button>
+    <button class="active" onclick="filterCategory('all', this)">All</button>
+    <button onclick="filterCategory('Home', this)">Home</button>
+    <button onclick="filterCategory('Garden', this)">Garden</button>
+    <button onclick="filterCategory('Fashion', this)">Fashion</button>
+    <button onclick="filterCategory('Makeup', this)">Makeup</button>
+    <button onclick="filterCategory('Electronic', this)">Electronic</button>
+    <button onclick="filterCategory('Health Care', this)">Health Care</button>
+    <button onclick="filterCategory('Food', this)">Food</button>
+    <button onclick="filterCategory('Education', this)">Education</button>
   </div>
 
   <div id="product-list" class="grid"></div>
@@ -48,7 +78,7 @@
     products.forEach(p => {
       const div = document.createElement('div');
       div.className = 'card';
-      const imgSrc = p.image ? `../${p.image}` : 'images/no-image.png';
+      const imgSrc = p.image ? `${p.image}` : 'image/no-image.png';
 
       div.innerHTML = `
         <img src="${imgSrc}" alt="${p.name}">
@@ -61,9 +91,9 @@
     });
   }
 
-  function filterCategory(category) {
+  function filterCategory(category, el) {
     document.querySelectorAll('.category-bar button').forEach(btn => btn.classList.remove('active'));
-    event.target.classList.add('active');
+    if (el) el.classList.add('active');
 
     if (category === 'all') {
       renderProducts(allProducts);
@@ -78,5 +108,32 @@
   }
   </script>
 
+  <script>
+document.addEventListener("DOMContentLoaded", function() {
+
+  const btn = document.getElementById("menuBtn");
+  const menu = document.getElementById("profileMenu");
+
+  if (!btn || !menu) {
+    console.error("⚠ menuBtn หรือ profileMenu ไม่พบใน HTML");
+    return;
+  }
+
+  btn.addEventListener("click", function(event) {
+    event.stopPropagation(); // กันเมนูปิดเองตอนคลิกปุ่ม
+    menu.toggleAttribute("hidden");
+  });
+
+  document.addEventListener("click", function(event) {
+    const clickedInsideMenu = menu.contains(event.target);
+    const clickedButton = btn.contains(event.target);
+
+    if (!clickedInsideMenu && !clickedButton) {
+      menu.setAttribute("hidden", "");
+    }
+  });
+
+});
+</script>
 </body>
 </html>
