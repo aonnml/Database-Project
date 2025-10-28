@@ -4,60 +4,157 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Detail - Shipp Hi</title>
+
+  <!-- MAIN PAGE STYLES -->
   <link rel="stylesheet" href="css/product.css">
-  <style>
-    body { font-family: sans-serif; background: #f9f9f9; padding: 40px; }
-    .container { max-width: 800px; margin: auto; background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .img-box img { width: 100%; max-width: 350px; border-radius: 10px; }
-    .details { padding: 20px; }
-    .price { font-size: 1.4em; color: #007bff; margin: 10px 0; }
-    .back-btn { background: #555; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; }
-    .back-btn:hover { background: #333; }
-  </style>
+
+  <!-- DETAIL STYLES -->
+  <link rel="stylesheet" href="css/product_detail.css">
 </head>
 <body>
+
+  <div id="header-container"></div>
+
   <div class="container">
     <button class="back-btn" onclick="history.back()">← Back</button>
+
     <div class="product">
       <div class="img-box">
         <img id="product-image" src="" alt="Product Image">
       </div>
+
       <div class="details">
-        <h2 id="product-name"></h2>
-        <p class="price" id="product-price"></p>
-        <p><strong>Size:</strong> <span id="product-size"></span></p>
-        <p><strong>Stock:</strong> <span id="product-stock"></span></p>
-        <p><strong>Description:</strong></p>
-        <p><strong>Category:</strong> <span id="product-category"></span></p>
-        <p id="product-description"></p>
-      </div>
+  <h2 id="product-name"></h2>
+  <p class="price" id="product-price"></p>
+
+  <p><strong>Size:</strong> <span id="product-size"></span></p>
+  <p><strong>Stock:</strong> <span id="product-stock"></span></p>
+
+  <p><strong>Category:</strong> <span id="product-category"></span></p>
+
+  <p id="product-description"></p>
+
+<button class="add-btn" id="addToCartBtn">🛒 เพิ่มลงตะกร้า</button>
+</div>
     </div>
   </div>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id');
+ <!-- 🛒 Popup เลือกจำนวน -->
+<div id="qtyModal" class="bottom-sheet" hidden>
+  <div class="bottom-sheet-content">
+    <h3>เลือกจำนวนสินค้า</h3>
 
-    fetch(`backend/product_detail.php?id=${id}`)
-      .then(res => res.json())
-      .then(p => {
-        if (p.error) {
-          document.body.innerHTML = `<h2 style="color:red; text-align:center;">${p.error}</h2>`;
-          return;
-        }
-        console.log(p);
-        document.getElementById('product-name').innerHTML = p.name;
-        document.getElementById('product-price').innerText = `${p.price} ฿`;
-        document.getElementById('product-size').innerText = p.size || '-';
-        document.getElementById('product-stock').innerText = p.stock;
-        document.getElementById('product-description').innerHTML = p.description || 'No description available.';
-        document.getElementById('product-image').src = p.image ? p.image : 'images/no-image.png';
-        document.getElementById('product-category').innerText = p.category || '-';
-      })
-      .catch(err => {
-        document.body.innerHTML = `<h2 style="color:red; text-align:center;">Error loading product detail</h2>`;
-        console.error(err);
-      });
-  </script>
+    <div class="qty-box">
+      <button class="qty-btn" onclick="changeQty(-1)">-</button>
+      <span id="qtyValue">1</span>
+      <button class="qty-btn" onclick="changeQty(1)">+</button>
+    </div>
+
+    <div class="sheet-actions">
+      <button class="cancel-btn" onclick="closeQtyModal()">ยกเลิก</button>
+      <button class="ok-btn" onclick="confirmAddToCart()">เพิ่มลงตะกร้า</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  fetch("components/header.html")
+  .then(res => res.text())
+  .then(html => {
+    document.getElementById("header-container").innerHTML = html;
+
+    // โหลด script ของ menu หลังแทรก header แล้ว
+    const script = document.createElement("script");
+    script.src = "js/header.js";
+    document.body.appendChild(script);
+  });
+
+let selectedProductId = null;
+let qty = 1;
+
+const qtyModal = document.getElementById("qtyModal");
+const qtyValue = document.getElementById("qtyValue");
+const addToCartBtn = document.getElementById("addToCartBtn");
+
+if (addToCartBtn) {
+  addToCartBtn.disabled = true;
+  addToCartBtn.addEventListener("click", () => {
+    if (!selectedProductId) return;
+    openQtyModal();
+  });
+}
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+fetch(`backend/product_detail.php?id=${id}`)
+  .then(res => res.json())
+  .then(p => {
+    if (p.error) {
+      document.body.innerHTML = `<h2 style="color:red; text-align:center;">${p.error}</h2>`;
+      return;
+    }
+
+    document.getElementById('product-name').innerHTML = p.name;
+    document.getElementById('product-price').innerText = `${p.price} ฿`;
+    document.getElementById('product-size').innerText = p.size || '-';
+    document.getElementById('product-stock').innerText = p.stock;
+    document.getElementById('product-description').innerHTML = p.description || 'No description available.';
+    document.getElementById('product-image').src = p.image ? p.image : 'images/no-image.png';
+    document.getElementById('product-category').innerText = p.category || '-';
+
+    selectedProductId = p.id;
+    if (addToCartBtn) {
+      addToCartBtn.disabled = false;
+    }
+  })
+  .catch(() => {
+    if (addToCartBtn) {
+      addToCartBtn.disabled = true;
+    }
+  });
+
+function openQtyModal() {
+  qty = 1;
+  qtyValue.innerText = qty;
+  qtyModal.removeAttribute("hidden");
+}
+
+function closeQtyModal() {
+  qtyModal.setAttribute("hidden", "");
+}
+
+function changeQty(amount) {
+  qty += amount;
+  if (qty < 1) qty = 1;
+  qtyValue.innerText = qty;
+}
+
+function confirmAddToCart() {
+  fetch("backend/add_to_cart.php", {
+    method: "POST",
+    headers: {"Content-Type": "application/x-www-form-urlencoded"},
+    body: `productId=${selectedProductId}&quantity=${qty}`
+  })
+  .then(res => res.text())
+  .then(msg => {
+    alert(msg);
+    closeQtyModal();
+  });
+}
+
+document.addEventListener("click", function(e) {
+  const box = document.querySelector(".bottom-sheet-content");
+  if (!qtyModal.hasAttribute("hidden")) {
+    if (addToCartBtn && addToCartBtn.contains(e.target)) return;
+    if (!box.contains(e.target)) {
+    closeQtyModal();
+  }
+  }
+});
+
+</script>
+
 </body>
 </html>

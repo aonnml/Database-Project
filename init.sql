@@ -67,3 +67,12 @@ CREATE TABLE IF NOT EXISTS review(
     FOREIGN KEY (userId) REFERENCES users(id),
     FOREIGN KEY (productId) REFERENCES product(id)
 );
+
+CREATE TABLE IF NOT EXISTS cart (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  userId INT NOT NULL,
+  productId INT NOT NULL,
+  quantity INT NOT NULL DEFAULT 1,
+  FOREIGN KEY (userId) REFERENCES users(id),
+  FOREIGN KEY (productId) REFERENCES product(id)
+);
