@@ -1,0 +1,84 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #fffafc;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  background-color: #ff7aa2;
+}
+
+.tab {
+  padding: 12px 20px;
+  border: none;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.tab.active {
+  border-bottom: 3px solid white;
+}
+
+.review-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin: 15px;
+  padding: 15px;
+}
+
+.review-card img {
+  width: 100px;
+  border-radius: 10px;
+}
+
+.review-card textarea {
+  width: 100%;
+  height: 60px;
+  margin-top: 10px;
+}
+
+.review-card button {
+  background-color: #ff7aa2;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  margin-top: 5px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  background-color: #ff7aa2;
+  color: white;
+  padding: 10px 15px;
+  position: relative;
+}
+
+header h2 {
+  flex-grow: 1;
+  text-align: center;
+  margin: 0;
+  font-size: 20px;
+}
+
+.back-btn {
+  position: absolute;
+  left: 10px;
+  background: white;
+  color: #ff7aa2;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #ffe4ec;
+}

@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
+  <button onclick="window.location.href='product.html'" class="back-btn">←</button>
+
   <div class="profile-container">
     <h2>Profile</h2>
     <div class="profile-info">
@@ -19,18 +21,9 @@
   </div>
 
   <div class="menu">
-    <div>
-      <div class="icon">🛒</div>
-      <div>basket</div>
-    </div>
-    <div>
-      <div class="icon">💵</div>
-      <div>payment</div>
-    </div>
-    <div>
-      <div class="icon">⭐</div>
-      <div>review</div>
-    </div>
+    <div data-link="basket.html"><div class="icon">🛒</div><div>basket</div></div>
+    <div data-link="payment.html"><div class="icon">💵</div><div>payment</div></div>
+    <div data-link="review.html"><div class="icon">⭐</div><div>review</div></div>
   </div>
 
   <script>
@@ -48,6 +41,13 @@
         document.getElementById("email").textContent = data.email;
       })
       .catch(err => console.error("Fetch error:", err));
+
+    document.querySelectorAll('.menu div').forEach(item => {
+      item.addEventListener('click', () => {
+        const link = item.getAttribute('data-link');
+        window.location.href = link;
+      });
+    });
   </script>
 </body>
 </html>

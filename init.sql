@@ -68,6 +68,8 @@ CREATE TABLE IF NOT EXISTS review(
     FOREIGN KEY (productId) REFERENCES product(id)
 );
 
+ALTER TABLE review ADD COLUMN is_reviewed TINYINT(1) DEFAULT 0;
+
 CREATE TABLE IF NOT EXISTS cart (
   id INT AUTO_INCREMENT PRIMARY KEY,
   userId INT NOT NULL,
@@ -76,3 +78,13 @@ CREATE TABLE IF NOT EXISTS cart (
   FOREIGN KEY (userId) REFERENCES users(id),
   FOREIGN KEY (productId) REFERENCES product(id)
 );
+
+INSERT INTO `category` (`id`, `name`) VALUES
+  ('1','Home'),
+  ('2','Garden'),
+  ('3','Fashion'),
+  ('4','Makeup'),
+  ('5','Electronic'),
+  ('6','HealthCare'),
+  ('7','Food'),
+  ('8','Education');

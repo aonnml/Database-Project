@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f8f9fa;
+  margin: 0;
+  padding: 20px;
+}
+
+/* ปุ่มย้อนกลับ */
+.back-btn {
+  background: white;
+  color: #ff7aa2;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background-color: #ffe4ec;
+}
+
+/* หัวข้อ */
+h2 {
+  text-align: center;
+}
+
+/* ตารางสินค้า */
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+}
+
+tfoot td {
+  font-weight: bold;
+}
+
+/* ปุ่มชำระเงิน */
+#confirm-payment,
+#done-payment {
+  display: inline-block;
+  padding: 10px 20px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 6px;
+  background: #28a745;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#confirm-payment:hover,
+#done-payment:hover {
+  background: #218838;
+}
+
+#checkout {
+  display: none;
+  text-align: center;
+  margin-top: 30px;
+}
+
+#checkout img {
+  margin-top: 20px;
+  width: 200px;
+  height: 200px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+#checkout .amount {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}

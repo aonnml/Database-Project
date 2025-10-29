@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment | SHIPP HI</title>
+  <link rel="stylesheet" href="css/payment.css">
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='profile.html'">&larr; Back</button>
+  <h2>💳 Payment</h2>
+
+  <table id="cart-table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Subtotal</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3" style="text-align:right;">Total:</td>
+        <td id="total-price"><strong>0 ฿</strong></td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div style="text-align:center;">
+    <button id="confirm-payment">Confirm Payment</button>
+  </div>
+
+  <div id="checkout">
+    <div class="amount"></div>
+    <img id="qrcode" src="" alt="QR Code">
+    <div style="margin-top:20px;">
+      <button id="done-payment">Done</button>
+    </div>
+  </div>
+
+  <script>
+    let totalAmount = 0;
+    let cartItems = [];
+
+    fetch('backend/payment.php')
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        cartItems = data.cartItems;
+        const tbody = document.querySelector('#cart-table tbody');
+        tbody.innerHTML = '';
+
+        data.cartItems.forEach(item => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.price.toLocaleString()} ฿</td>
+            <td>${item.quantity}</td>
+            <td>${item.subtotal.toLocaleString()} ฿</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        totalAmount = data.totalPrice;
+        document.getElementById('total-price').innerHTML = `<strong>${totalAmount.toLocaleString()} ฿</strong>`;
+      })
+      .catch(err => console.error('Fetch error:', err));
+
+    document.getElementById('confirm-payment').addEventListener('click', () => {
+        if (!cartItems || cartItems.length === 0) {
+            alert('ตะกร้าว่าง ไม่มีสินค้าให้ชำระเงิน');
+            return;
+        }
+
+        document.getElementById('confirm-payment').style.display = 'none';
+
+        const checkoutDiv = document.getElementById('checkout');
+        checkoutDiv.style.display = 'block';
+        checkoutDiv.querySelector('.amount').textContent = `ยอดชำระทั้งหมด: ${totalAmount.toLocaleString()} ฿`;
+        document.getElementById('qrcode').src = 'images/logo.png';
+    });
+
+
+    document.getElementById('done-payment').addEventListener('click', () => {
+      fetch('backend/checkout.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cartItems })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem('cartItems', JSON.stringify(cartItems));
+          localStorage.setItem('totalAmount', totalAmount);
+          window.location.href = 'review.html';
+        } else {
+          alert('Error: ' + data.error);
+        }
+      })
+      .catch(err => console.error(err));
+    });
+  </script>
+</body>
+</html>

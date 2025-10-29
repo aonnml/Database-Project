@@ -6,13 +6,25 @@ body {
   align-items: center;
 }
 
+.back-btn {
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  font-size: 16px;
+}
+
 .profile-container {
   background-color: #ff6f73;
   color: white;
   width: 480px;
   padding: 25px;
   border-radius: 20px;
-  margin-top: 40px;
+  margin-top: 0;
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
 }
 
@@ -65,9 +77,20 @@ body {
   text-align: center;
   color: #ff4d4f;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .icon {
   font-size: 40px;
   margin-bottom: 5px;
+}
+
+.review-header .back-btn {
+  position: absolute;
+  left: 10px;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
 }
