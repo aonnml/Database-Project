@@ -6,12 +6,16 @@ CREATE TABLE IF NOT EXISTS users (
     name VARCHAR(100) NOT NULL,
     lastname VARCHAR(100) NOT NULL,
     address VARCHAR(255),
-    email VARCHAR(150) NOT NULL UNIQUE
+    email VARCHAR(150) NOT NULL UNIQUE,
+    profile_image VARCHAR(255) DEFAULT 'image/user.jpg'
 );
 
 ALTER TABLE users
 ADD phoneNum VARCHAR(15),
 ADD password VARCHAR(100) NOT NULL;
+
+ALTER TABLE users
+ADD COLUMN IF NOT EXISTS profile_image VARCHAR(255) DEFAULT 'image/user.jpg';
 
 CREATE TABLE IF NOT EXISTS saler (
     id INT AUTO_INCREMENT PRIMARY KEY,

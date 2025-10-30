@@ -51,6 +51,21 @@ body {
   font-weight: 600;
 }
 
+.profile-avatar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.profile-avatar img {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.65);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
 /* ข้อมูลโปรไฟล์ */
 .profile-info {
   background-color: rgba(255, 255, 255, 0.22);
@@ -126,6 +141,11 @@ body {
 
 .form-field textarea {
   resize: vertical;
+}
+
+.field-hint {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
 }
 
 /* ปุ่มในฟอร์ม */

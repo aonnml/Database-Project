@@ -13,6 +13,9 @@
 
   <div class="profile-container">
     <h2>Profile</h2>
+    <div class="profile-avatar">
+      <img id="profileImage" src="image/user.jpg" alt="Profile picture">
+    </div>
     <div class="profile-info" id="profileInfo">
       <p><span>Name:</span> <span id="name"></span></p>
       <p><span>Last Name:</span> <span id="lastName"></span></p>
@@ -20,7 +23,7 @@
       <p><span>Phone:</span> <span id="phone"></span></p>
       <p><span>Email:</span> <span id="email"></span></p>
     </div>
-    <form id="profileForm" class="profile-form" hidden>
+    <form id="profileForm" class="profile-form" hidden enctype="multipart/form-data">
       <div class="form-field">
         <label for="inputName">Name</label>
         <input type="text" id="inputName" name="name" required>
@@ -41,6 +44,11 @@
         <label for="inputEmail">Email</label>
         <input type="email" id="inputEmail" name="email" required>
       </div>
+      <div class="form-field">
+        <label for="inputProfileImage">Profile Image</label>
+        <input type="file" id="inputProfileImage" name="profileImage" accept="image/*">
+        <small class="field-hint">Leave blank to keep your current photo.</small>
+      </div>
       <div class="form-actions">
         <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
         <button type="submit" class="btn btn-primary">Save</button>
@@ -60,8 +68,11 @@
     const profileForm = document.getElementById('profileForm');
     const editBtn = document.getElementById('editProfileBtn');
     const cancelBtn = document.getElementById('cancelEdit');
+    const profileImageEl = document.getElementById('profileImage');
+    const profileImageInput = document.getElementById('inputProfileImage');
 
     let profileData = null;
+  let activePreviewUrl = null;
 
     fetch("backend/profile.php", { credentials: 'include' })
       .then(res => res.json())
@@ -76,12 +87,21 @@
       })
       .catch(err => console.error("Fetch error:", err));
 
+    function getProfileImageSrc(path) {
+      const fallback = 'image/user.jpg';
+      if (!path || !path.trim()) {
+        return fallback;
+      }
+      return path;
+    }
+
     function renderProfile(data) {
       document.getElementById("name").textContent = data.name || '';
       document.getElementById("lastName").textContent = data.lastname || '';
       document.getElementById("address").textContent = data.address || '';
       document.getElementById("phone").textContent = data.phone || '';
       document.getElementById("email").textContent = data.email || '';
+      profileImageEl.src = getProfileImageSrc(data.profile_image || '');
     }
 
     function fillForm(data) {
@@ -90,6 +110,7 @@
       document.getElementById("inputAddress").value = data.address || '';
       document.getElementById("inputPhone").value = data.phone || '';
       document.getElementById("inputEmail").value = data.email || '';
+      profileImageInput.value = '';
     }
 
     function toggleEditMode(showForm) {
@@ -105,28 +126,51 @@
           renderProfile(profileData);
           fillForm(profileData);
         }
+        profileImageInput.value = '';
+        if (activePreviewUrl) {
+          URL.revokeObjectURL(activePreviewUrl);
+          activePreviewUrl = null;
+        }
       }
     }
 
     editBtn.addEventListener('click', () => toggleEditMode(true));
     cancelBtn.addEventListener('click', () => toggleEditMode(false));
 
+    profileImageInput.addEventListener('change', () => {
+      if (activePreviewUrl) {
+        URL.revokeObjectURL(activePreviewUrl);
+        activePreviewUrl = null;
+      }
+
+      const [file] = profileImageInput.files;
+      if (file) {
+        activePreviewUrl = URL.createObjectURL(file);
+        profileImageEl.src = activePreviewUrl;
+      } else if (profileData) {
+        profileImageEl.src = getProfileImageSrc(profileData.profile_image || '');
+      }
+    });
+
     profileForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const formData = {
-        name: document.getElementById('inputName').value.trim(),
-        lastname: document.getElementById('inputLastName').value.trim(),
-        address: document.getElementById('inputAddress').value.trim(),
-        phone: document.getElementById('inputPhone').value.trim(),
-        email: document.getElementById('inputEmail').value.trim()
-      };
+      const formData = new FormData();
+      formData.append('name', document.getElementById('inputName').value.trim());
+      formData.append('lastname', document.getElementById('inputLastName').value.trim());
+      formData.append('address', document.getElementById('inputAddress').value.trim());
+      formData.append('phone', document.getElementById('inputPhone').value.trim());
+      formData.append('email', document.getElementById('inputEmail').value.trim());
+
+      const imageFile = profileImageInput.files[0];
+      if (imageFile) {
+        formData.append('profileImage', imageFile);
+      }
 
       fetch('backend/update_profile.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify(formData)
+        body: formData
       })
         .then(res => res.json())
         .then(result => {
@@ -135,7 +179,21 @@
             return;
           }
 
-          profileData = { ...profileData, ...formData };
+          profileData = {
+            ...profileData,
+            name: formData.get('name'),
+            lastname: formData.get('lastname'),
+            address: formData.get('address'),
+            phone: formData.get('phone'),
+            email: formData.get('email'),
+            profile_image: result.profile_image || profileData?.profile_image || ''
+          };
+
+          profileImageInput.value = '';
+          if (activePreviewUrl) {
+            URL.revokeObjectURL(activePreviewUrl);
+            activePreviewUrl = null;
+          }
           renderProfile(profileData);
           toggleEditMode(false);
           alert('Profile updated successfully.');
