@@ -1,11 +1,12 @@
 body {
   margin: 0;
-  font-family: "Poppins", sans-serif;
-  background-color: #ff6f75;
+  font-family: "Prompt", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ff9bb2, #ff6f75);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  padding: 0 20px;
 }
 
 .container {
@@ -14,43 +15,65 @@ body {
   padding-bottom: 80px;
 }
 
-.slogan img{
+/* โลโก้บน */
+.slogan img {
   width: 150px;
   height: auto;
-  margin-bottom: 50px;
+  margin-bottom: 45px;
+  filter: drop-shadow(0px 6px 10px rgba(255, 255, 255, 0.25));
 }
 
+/* ข้อความ */
 h1 {
-  font-size: 1.2em;
-  margin-bottom: 20px;
-  text-shadow: 1px 2px rgba(0,0,0,0.1);
+  font-size: 1.25em;
+  margin-bottom: 18px;
+  text-shadow: 1px 3px rgba(0,0,0,0.15);
+  font-weight: 500;
 }
 
+/* โลโก้หลัก */
 .logo img {
-  width: 300px;
+  width: 320px;
   height: auto;
-  margin-bottom: 5px;
-  filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
+  margin-bottom: 10px;
+  filter: drop-shadow(0px 5px 12px rgba(255, 255, 255, 0.35));
 }
 
+/* ปุ่ม */
 .buttons {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  gap: 28px;
+  margin-top: 15px;
 }
 
 .btn {
   text-decoration: none;
-  background-color: white;
-  color: #ff4f57;
-  padding: 12px 40px;
-  font-weight: bold;
-  border-radius: 25px;
-  box-shadow: 4px 4px 8px rgba(0,0,0,0.2);
-  transition: all 0.2s ease;
+  background: #ffffff;
+  color: #ff4f68;
+  padding: 12px 42px;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 6px 14px rgba(255, 78, 130, 0.35);
+  transition: 0.3s;
 }
 
 .btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 6px 6px 10px rgba(0,0,0,0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 18px rgba(255, 78, 130, 0.45);
+  background: #fff2f6;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .logo img {
+    width: 250px;
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .btn {
+    padding: 12px 30px;
+  }
 }

@@ -1,76 +1,101 @@
 body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f8f8f8;
+  font-family: "Prompt", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ffe3ef, #fff5f8);
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0;
+  padding: 20px;
 }
 
+/* ปุ่มย้อนกลับ */
 .back-btn {
-  background-color: #ff4d4f;
+  background-color: #ff7fa8;
   color: white;
   border: none;
-  border-radius: 15px;
+  border-radius: 14px;
   padding: 8px 15px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 15px;
   margin-bottom: 20px;
   font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(255, 120, 150, 0.3);
+  transition: 0.25s;
+}
+.back-btn:hover {
+  background-color: #e56993;
+  box-shadow: 0 6px 14px rgba(255, 120, 150, 0.4);
 }
 
+/* กล่องโปรไฟล์ */
 .profile-container {
-  background-color: #ff6f73;
+  background-color: #ff7fa8;
   color: white;
   width: 480px;
-  padding: 25px;
-  border-radius: 20px;
+  padding: 28px;
+  border-radius: 22px;
   margin-top: 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 8px 22px rgba(255, 120, 150, 0.35);
 }
 
+/* หัวข้อในโปรไฟล์ */
 .profile-container h2 {
   text-align: center;
-  background-color: #ffb3b3;
-  border-radius: 15px;
+  background-color: #ffc8da;
+  border-radius: 18px;
   padding: 10px;
   width: 60%;
   margin: 0 auto 20px;
+  color: #b4305d;
+  font-weight: 600;
 }
 
+/* ข้อมูลโปรไฟล์ */
 .profile-info {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.22);
   border-radius: 15px;
   padding: 15px;
 }
 
 .profile-info p {
   margin: 8px 0;
+  font-weight: 400;
 }
 
 .profile-info span:first-child {
-  font-weight: bold;
+  font-weight: 600;
   margin-right: 5px;
 }
 
+/* ปุ่มแก้ไข */
 .edit-btn {
-  background-color: #ff4d4f;
+  background-color: #ffffff;
   border: none;
   border-radius: 20px;
   padding: 10px 25px;
-  color: white;
+  color: #ff4d6e;
   cursor: pointer;
   float: right;
   margin-top: 10px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.4);
+  transition: 0.25s;
+}
+.edit-btn:hover {
+  background-color: #ffe5ee;
 }
 
+/* ฟอร์มแก้ไข */
 .profile-form {
   margin-top: 20px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.25);
   border-radius: 15px;
-  padding: 15px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  backdrop-filter: blur(6px);
 }
 
 .profile-form[hidden] {
@@ -85,6 +110,7 @@ body {
 
 .form-field label {
   font-weight: 600;
+  color: #fff;
 }
 
 .form-field input,
@@ -92,14 +118,17 @@ body {
   padding: 10px;
   border: none;
   border-radius: 12px;
-  font-size: 14px;
+  font-size: 15px;
   outline: none;
+  background: #fff7fb;
+  color: #555;
 }
 
 .form-field textarea {
   resize: vertical;
 }
 
+/* ปุ่มในฟอร์ม */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -109,56 +138,58 @@ body {
 
 .btn {
   border: none;
-  border-radius: 20px;
+  border-radius: 22px;
   padding: 10px 22px;
   cursor: pointer;
   font-weight: 600;
+  transition: 0.25s;
 }
 
 .btn-primary {
   background-color: #ffffff;
-  color: #ff4d4f;
+  color: #ff4d6e;
 }
-
 .btn-primary:hover {
-  background-color: #ffe5e5;
+  background-color: #ffe5ee;
 }
 
 .btn-secondary {
-  background-color: rgba(0,0,0,0.15);
+  background-color: rgba(255, 255, 255, 0.25);
   color: #fff;
 }
-
 .btn-secondary:hover {
-  background-color: rgba(0,0,0,0.25);
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
+/* เมนูด้านล่าง */
 .menu {
   width: 480px;
   display: flex;
   justify-content: space-around;
   background-color: white;
-  border-radius: 0 0 20px 20px;
-  padding: 20px 0;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 0 0 22px 22px;
+  padding: 18px 0;
+  margin-top: -10px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.08);
 }
 
 .menu div {
   text-align: center;
-  color: #ff4d4f;
-  font-weight: bold;
+  color: #ff4d6e;
+  font-weight: 600;
   cursor: pointer;
 }
 
 .icon {
-  font-size: 40px;
-  margin-bottom: 5px;
+  font-size: 38px;
+  margin-bottom: 6px;
 }
 
+/* หน้ารีวิว */
 .review-header .back-btn {
   position: absolute;
   left: 10px;
-  background: none;
+  background: transparent;
   border: none;
   color: white;
   font-size: 22px;

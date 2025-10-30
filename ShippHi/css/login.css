@@ -1,6 +1,6 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f87272;
+  font-family: "Prompt", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ff9bb2, #f87272);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8,82 +8,119 @@ body {
   margin: 0;
 }
 
+/* กรอบใหญ่ */
 .container {
   display: flex;
   align-items: center;
-  background: #f87272;
+  background: transparent;
   padding: 50px 80px;
-  border-radius: 15px;
+  border-radius: 18px;
 }
 
+/* ฝั่งโลโก้ */
 .logo-section {
   text-align: center;
   color: white;
   margin-right: 60px;
+  text-shadow: 0px 3px 8px rgba(255, 255, 255, 0.3);
 }
 
 .logo {
-  width: 120px;
-  margin-bottom: 10px;
+  width: 140px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0px 6px 12px rgba(255,255,255,0.4));
 }
 
+/* ฟอร์ม */
 .form-section {
-  background-color: #f6f6f6;
-  border-radius: 15px;
-  padding: 40px 50px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #fff6f8;
+  border-radius: 18px;
+  padding: 45px 55px;
+  box-shadow: 0 8px 25px rgba(255, 60, 130, 0.25);
 }
 
+/* หัวข้อ */
 h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
+  color: #c62978;
+  margin-bottom: 25px;
+  font-weight: 600;
 }
 
+/* Label */
 label {
   font-size: 14px;
   color: #555;
 }
 
+/* Input */
 input {
   width: 100%;
   margin: 8px 0 15px;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.8px solid #ffbdd3;
   font-size: 14px;
+  transition: 0.25s;
 }
 
+input:focus {
+  border-color: #ff7bb3;
+  box-shadow: 0 0 0 3px rgba(255, 140, 180, 0.25);
+  outline: none;
+}
+
+/* ปุ่ม */
 .buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 15px;
+  margin-top: 20px;
 }
 
 button {
   width: 48%;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 10px;
-  font-weight: bold;
+  border-radius: 12px;
+  font-weight: 600;
   cursor: pointer;
   font-size: 15px;
   transition: 0.3s;
 }
 
+/* ปุ่มยกเลิก */
 .cancel {
-  background-color: #f44336;
+  background-color: #ff5c7a;
   color: white;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 5px 12px rgba(255, 56, 108, 0.35);
+}
+.cancel:hover {
+  background-color: #e04d6a;
 }
 
+/* ปุ่มตกลง */
 .ok {
   background-color: white;
-  color: #f44336;
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.25);
+  color: #ff5c7a;
+  box-shadow: 0 5px 12px rgba(255, 56, 108, 0.3);
+}
+.ok:hover {
+  background-color: #ff5c7a;
+  color: white;
 }
 
-.ok:hover {
-  background-color: #f44336;
-  color: white;
+/* Responsive */
+@media (max-width: 600px) {
+  .container {
+    flex-direction: column;
+    padding: 30px;
+  }
+  .logo-section {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  .form-section {
+    width: 100%;
+    padding: 35px 25px;
+  }
 }

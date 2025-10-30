@@ -1,10 +1,10 @@
 /* ===========================
-   Add Product Page Styling
+   Add Product Page Styling (Pink & White Theme)
    =========================== */
 
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #f7f8fa, #e3eaf2);
+  font-family: 'Prompt', 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffe6f2, #ffffff);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,80 +12,95 @@ body {
   margin: 0;
 }
 
+/* ฟอร์มกล่อง */
 form {
-  background: #fff;
-  width: 400px;
-  padding: 30px 40px;
-  border-radius: 12px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  background: #ffffff;
+  width: 420px;
+  padding: 35px 45px;
+  border-radius: 16px;
+  box-shadow: 0 8px 26px rgba(255, 105, 180, 0.18);
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
+  border: 2px solid #ffd3e8;
 }
 
+/* หัวข้อ */
 h2 {
   text-align: center;
-  color: #333;
-  margin-bottom: 20px;
-}
-
-label {
+  color: #c62978;
   font-weight: 600;
-  color: #444;
-  margin-bottom: 4px;
+  margin-bottom: 18px;
 }
 
+/* Label */
+label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 3px;
+}
+
+/* Input / Textarea / Select */
 input[type="text"],
 input[type="number"],
 textarea,
 select {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 12px 14px;
+  border: 1.8px solid #e6bcd1;
+  border-radius: 10px;
   font-size: 14px;
-  transition: border-color 0.2s;
+  background: #fff;
+  transition: 0.25s;
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: #007bff;
+  border-color: #ff7ebd;
+  box-shadow: 0 0 0 3px rgba(255, 126, 189, 0.25);
 }
 
+/* ปรับ textarea */
 textarea {
   resize: vertical;
 }
 
+/* ปุ่ม */
 button {
-  margin-top: 10px;
-  background: #007bff;
+  margin-top: 12px;
+  background: #ff77b0;
   color: #fff;
   font-weight: 600;
   border: none;
-  padding: 12px;
-  border-radius: 8px;
+  padding: 13px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background 0.25s;
+  transition: 0.3s;
 }
 
 button:hover {
-  background: #0056b3;
+  background: #e8619f;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
+/* File input */
 input[type="file"] {
   border: none;
   font-size: 14px;
+  padding: 6px;
 }
 
+/* Select dropdown */
 select {
   background-color: #fff;
 }
 
+/* Responsive */
 @media (max-width: 480px) {
   form {
-    width: 90%;
-    padding: 20px;
+    width: 92%;
+    padding: 25px;
   }
 }

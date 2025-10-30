@@ -1,84 +1,128 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #fffafc;
+  font-family: "Prompt", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #fff0f7, #fff9fc);
+  margin: 0;
+  padding: 0;
 }
 
+/* Tabs บนหัว */
 .tabs {
   display: flex;
   justify-content: center;
-  background-color: #ff7aa2;
+  background-color: #ff8eb5;
+  box-shadow: 0 3px 12px rgba(255, 120, 156, 0.25);
 }
 
 .tab {
-  padding: 12px 20px;
+  padding: 12px 22px;
   border: none;
   background: transparent;
   color: white;
   cursor: pointer;
-  font-weight: bold;
+  font-weight: 600;
+  transition: 0.25s;
+}
+
+.tab:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
 }
 
 .tab.active {
   border-bottom: 3px solid white;
 }
 
+/* Review Card */
 .review-card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin: 15px;
-  padding: 15px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(255, 120, 156, 0.2);
+  margin: 18px;
+  padding: 18px;
+  transition: 0.25s;
+}
+
+.review-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(255, 120, 156, 0.28);
 }
 
 .review-card img {
   width: 100px;
-  border-radius: 10px;
+  border-radius: 12px;
 }
 
 .review-card textarea {
   width: 100%;
-  height: 60px;
-  margin-top: 10px;
+  height: 65px;
+  margin-top: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #ffc6d9;
+  padding: 8px;
+  background: #fff7fb;
+  font-size: 14px;
+  transition: 0.25s;
 }
 
+.review-card textarea:focus {
+  outline: none;
+  border-color: #ff8eb5;
+  box-shadow: 0 0 0 3px rgba(255, 140, 185, 0.25);
+}
+
+/* ปุ่มส่งรีวิว */
 .review-card button {
-  background-color: #ff7aa2;
+  background-color: #ff8eb5;
   color: white;
   border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
-  margin-top: 5px;
+  padding: 9px 18px;
+  border-radius: 10px;
+  margin-top: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 4px 12px rgba(255, 120, 156, 0.3);
 }
 
+.review-card button:hover {
+  background-color: #e56d97;
+  box-shadow: 0 6px 16px rgba(255, 120, 156, 0.4);
+}
+
+/* Header */
 header {
   display: flex;
   align-items: center;
-  background-color: #ff7aa2;
+  background-color: #ff8eb5;
   color: white;
-  padding: 10px 15px;
+  padding: 12px 15px;
   position: relative;
+  box-shadow: 0 4px 14px rgba(255,120,156,0.35);
 }
 
 header h2 {
   flex-grow: 1;
   text-align: center;
   margin: 0;
-  font-size: 20px;
+  font-size: 21px;
+  font-weight: 600;
 }
 
+/* ปุ่มย้อนกลับ */
 .back-btn {
   position: absolute;
-  left: 10px;
-  background: white;
-  color: #ff7aa2;
+  left: 12px;
+  background: #ffffff;
+  color: #ff8eb5;
   border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: bold;
+  padding: 6px 14px;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s;
+  box-shadow: 0 3px 10px rgba(255,120,156,0.3);
 }
 
 .back-btn:hover {
-  background-color: #ffe4ec;
+  background-color: #ffe6ee;
 }

@@ -1,8 +1,9 @@
 body {
-  font-family: Arial, sans-serif;
-  background: #f8f9fa;
+  font-family: "Prompt", "Poppins", sans-serif;
+  background: linear-gradient(135deg, #ffe6f1, #f8f9fa);
   margin: 0;
   padding: 20px;
+  color: #444;
 }
 
 /* ปุ่มย้อนกลับ */
@@ -11,77 +12,98 @@ body {
   color: #ff7aa2;
   border: none;
   padding: 8px 14px;
-  border-radius: 8px;
-  font-weight: bold;
+  border-radius: 10px;
+  font-weight: 600;
   cursor: pointer;
-  transition: 0.2s;
+  transition: 0.25s;
+  box-shadow: 0 3px 8px rgba(255, 120, 150, 0.2);
 }
 
 .back-btn:hover {
   background-color: #ffe4ec;
+  box-shadow: 0 5px 12px rgba(255, 120, 150, 0.25);
 }
 
 /* หัวข้อ */
 h2 {
   text-align: center;
+  color: #c62978;
+  font-weight: 600;
+  margin-top: 10px;
 }
 
 /* ตารางสินค้า */
 table {
   width: 80%;
-  margin: 20px auto;
+  margin: 25px auto;
   border-collapse: collapse;
   background: white;
-  border-radius: 10px;
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 6px 18px rgba(255, 120, 150, 0.25);
 }
 
-th, td {
-  border: 1px solid #ddd;
-  padding: 10px;
+th {
+  background: #ff9dbf;
+  color: white;
+  padding: 12px;
+  font-weight: 600;
+}
+
+td {
+  border: 1px solid #f0c9d8;
+  padding: 12px;
   text-align: center;
 }
 
 tfoot td {
   font-weight: bold;
+  background-color: #fff3f7;
+  color: #c62978;
 }
 
 /* ปุ่มชำระเงิน */
 #confirm-payment,
 #done-payment {
   display: inline-block;
-  padding: 10px 20px;
-  margin-top: 20px;
+  padding: 12px 26px;
+  margin-top: 25px;
   border: none;
-  border-radius: 6px;
-  background: #28a745;
+  border-radius: 12px;
+  background: #ff7aa2;
   color: white;
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 5px 14px rgba(255, 120, 150, 0.3);
 }
 
 #confirm-payment:hover,
 #done-payment:hover {
-  background: #218838;
+  background: #e35f8c;
+  box-shadow: 0 7px 18px rgba(255, 120, 150, 0.35);
 }
 
 #checkout {
   display: none;
   text-align: center;
-  margin-top: 30px;
+  margin-top: 40px;
 }
 
+/* QR Display */
 #checkout img {
   margin-top: 20px;
-  width: 200px;
-  height: 200px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  width: 220px;
+  height: 220px;
+  border: 3px solid #ffbdd3;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(255, 120, 150, 0.25);
 }
 
 #checkout .amount {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #c62978;
+  margin-bottom: 12px;
 }
