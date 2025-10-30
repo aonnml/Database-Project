@@ -6,6 +6,8 @@
   <link rel="stylesheet" href="css/payment.css">
 </head>
 <body>
+  <div id="header-container"></div>
+  <script src="js/header-loader.js" defer></script>
   <button class="back-btn" onclick="window.location.href='profile.html'">&larr; Back</button>
   <h2>💳 Payment</h2>
 
@@ -43,33 +45,62 @@
     let totalAmount = 0;
     let cartItems = [];
 
-    fetch('backend/payment.php')
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-          return;
-        }
+    const tbody = document.querySelector('#cart-table tbody');
+    const selectedIds = JSON.parse(localStorage.getItem('selectedCartItems') || '[]');
 
-        cartItems = data.cartItems;
-        const tbody = document.querySelector('#cart-table tbody');
-        tbody.innerHTML = '';
-
-        data.cartItems.forEach(item => {
-          const tr = document.createElement('tr');
-          tr.innerHTML = `
-            <td>${item.name}</td>
-            <td>${item.price.toLocaleString()} ฿</td>
-            <td>${item.quantity}</td>
-            <td>${item.subtotal.toLocaleString()} ฿</td>
-          `;
-          tbody.appendChild(tr);
-        });
-
-        totalAmount = data.totalPrice;
-        document.getElementById('total-price').innerHTML = `<strong>${totalAmount.toLocaleString()} ฿</strong>`;
+    if (!Array.isArray(selectedIds) || selectedIds.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">ไม่มีสินค้าที่เลือกไว้ กรุณากลับไปหน้าตะกร้า</td></tr>';
+      document.getElementById('confirm-payment').disabled = true;
+    } else {
+      fetch('backend/payment.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ cartIds: selectedIds })
       })
-      .catch(err => console.error('Fetch error:', err));
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            alert(data.error);
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#d00;">ไม่สามารถโหลดข้อมูลได้</td></tr>';
+            document.getElementById('confirm-payment').disabled = true;
+            return;
+          }
+
+          cartItems = data.cartItems || [];
+
+          if (!cartItems.length) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#888;">ไม่มีสินค้าที่เลือกไว้ กรุณากลับไปหน้าตะกร้า</td></tr>';
+            document.getElementById('confirm-payment').disabled = true;
+            return;
+          }
+
+          tbody.innerHTML = '';
+
+          cartItems.forEach(item => {
+            const price = Number(item.price) || 0;
+            const quantity = Number(item.quantity) || 0;
+            const subtotal = Number(item.subtotal) || price * quantity;
+
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+              <td>${item.name}</td>
+              <td>${price.toLocaleString()} ฿</td>
+              <td>${quantity}</td>
+              <td>${subtotal.toLocaleString()} ฿</td>
+            `;
+            tbody.appendChild(tr);
+          });
+
+          totalAmount = Number(data.totalPrice) || 0;
+          document.getElementById('total-price').innerHTML = `<strong>${totalAmount.toLocaleString()} ฿</strong>`;
+        })
+        .catch(err => {
+          console.error('Fetch error:', err);
+          tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#d00;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+          document.getElementById('confirm-payment').disabled = true;
+        });
+    }
 
     document.getElementById('confirm-payment').addEventListener('click', () => {
         if (!cartItems || cartItems.length === 0) {
@@ -97,6 +128,7 @@
         if (data.success) {
           localStorage.setItem('cartItems', JSON.stringify(cartItems));
           localStorage.setItem('totalAmount', totalAmount);
+          localStorage.removeItem('selectedCartItems');
           window.location.href = 'review.html';
         } else {
           alert('Error: ' + data.error);

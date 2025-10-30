@@ -6,18 +6,46 @@
   <link rel="stylesheet" href="css/profile.css">
 </head>
 <body>
+  <div id="header-container"></div>
+  <script src="js/header-loader.js" defer></script>
   <button onclick="window.location.href='product.html'" class="back-btn">←</button>
 
   <div class="profile-container">
     <h2>Profile</h2>
-    <div class="profile-info">
+    <div class="profile-info" id="profileInfo">
       <p><span>Name:</span> <span id="name"></span></p>
       <p><span>Last Name:</span> <span id="lastName"></span></p>
       <p><span>Address:</span> <span id="address"></span></p>
       <p><span>Phone:</span> <span id="phone"></span></p>
       <p><span>Email:</span> <span id="email"></span></p>
     </div>
-    <button class="edit-btn">Edit</button>
+    <form id="profileForm" class="profile-form" hidden>
+      <div class="form-field">
+        <label for="inputName">Name</label>
+        <input type="text" id="inputName" name="name" required>
+      </div>
+      <div class="form-field">
+        <label for="inputLastName">Last Name</label>
+        <input type="text" id="inputLastName" name="lastname" required>
+      </div>
+      <div class="form-field">
+        <label for="inputAddress">Address</label>
+        <textarea id="inputAddress" name="address" rows="3"></textarea>
+      </div>
+      <div class="form-field">
+        <label for="inputPhone">Phone</label>
+        <input type="tel" id="inputPhone" name="phone">
+      </div>
+      <div class="form-field">
+        <label for="inputEmail">Email</label>
+        <input type="email" id="inputEmail" name="email" required>
+      </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancelEdit">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+    <button class="edit-btn" id="editProfileBtn">Edit</button>
   </div>
 
   <div class="menu">
@@ -27,20 +55,94 @@
   </div>
 
   <script>
-    fetch("backend/profile.php")
+    const profileInfo = document.getElementById('profileInfo');
+    const profileForm = document.getElementById('profileForm');
+    const editBtn = document.getElementById('editProfileBtn');
+    const cancelBtn = document.getElementById('cancelEdit');
+
+    let profileData = null;
+
+    fetch("backend/profile.php", { credentials: 'include' })
       .then(res => res.json())
       .then(data => {
         if (data.error) {
           alert(data.error);
           return;
         }
-        document.getElementById("name").textContent = data.name;
-        document.getElementById("lastName").textContent = data.lastname;
-        document.getElementById("address").textContent = data.address;
-        document.getElementById("phone").textContent = data.phone;
-        document.getElementById("email").textContent = data.email;
+        profileData = data;
+        renderProfile(data);
+        fillForm(data);
       })
       .catch(err => console.error("Fetch error:", err));
+
+    function renderProfile(data) {
+      document.getElementById("name").textContent = data.name || '';
+      document.getElementById("lastName").textContent = data.lastname || '';
+      document.getElementById("address").textContent = data.address || '';
+      document.getElementById("phone").textContent = data.phone || '';
+      document.getElementById("email").textContent = data.email || '';
+    }
+
+    function fillForm(data) {
+      document.getElementById("inputName").value = data.name || '';
+      document.getElementById("inputLastName").value = data.lastname || '';
+      document.getElementById("inputAddress").value = data.address || '';
+      document.getElementById("inputPhone").value = data.phone || '';
+      document.getElementById("inputEmail").value = data.email || '';
+    }
+
+    function toggleEditMode(showForm) {
+      if (showForm) {
+        profileInfo.setAttribute('hidden', '');
+        profileForm.removeAttribute('hidden');
+        editBtn.setAttribute('hidden', '');
+      } else {
+        profileForm.setAttribute('hidden', '');
+        profileInfo.removeAttribute('hidden');
+        editBtn.removeAttribute('hidden');
+        if (profileData) {
+          renderProfile(profileData);
+          fillForm(profileData);
+        }
+      }
+    }
+
+    editBtn.addEventListener('click', () => toggleEditMode(true));
+    cancelBtn.addEventListener('click', () => toggleEditMode(false));
+
+    profileForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const formData = {
+        name: document.getElementById('inputName').value.trim(),
+        lastname: document.getElementById('inputLastName').value.trim(),
+        address: document.getElementById('inputAddress').value.trim(),
+        phone: document.getElementById('inputPhone').value.trim(),
+        email: document.getElementById('inputEmail').value.trim()
+      };
+
+      fetch('backend/update_profile.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      })
+        .then(res => res.json())
+        .then(result => {
+          if (result.status !== 'success') {
+            alert(result.message || 'Unable to update profile.');
+            return;
+          }
+
+          profileData = { ...profileData, ...formData };
+          renderProfile(profileData);
+          toggleEditMode(false);
+          alert('Profile updated successfully.');
+        })
+        .catch(() => {
+          alert('Something went wrong. Please try again.');
+        });
+    });
 
     document.querySelectorAll('.menu div').forEach(item => {
       item.addEventListener('click', () => {

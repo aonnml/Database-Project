@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Basket</title>
+  <link rel="stylesheet" href="css/basket.css">
+</head>
+<body>
+
+  <div id="header-container"></div>
+  <script src="js/header-loader.js" defer></script>
+
+  <h1>🛒 My Basket</h1>
+  <div id="cart-list" class="cart-grid"></div>
+
+  <div class="cart-footer">
+    <label>
+      <input type="checkbox" id="selectAll"> Select All
+    </label>
+    <div class="total-area">
+      Total: <span id="totalPrice">0.00 ฿</span>
+    </div>
+    <button id="checkoutBtn" disabled>Go to Payment</button>
+  </div>
+
+  <script>
+  let cart = [];
+
+  const list = document.getElementById("cart-list");
+  const selectAll = document.getElementById("selectAll");
+  const checkoutBtn = document.getElementById("checkoutBtn");
+  const totalPriceEl = document.getElementById("totalPrice");
+
+  // ✅ ดึงข้อมูลจาก DB ผ่าน backend
+  fetch("backend/get_cart.php", { credentials: "include" })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        cart = data.data.map(item => ({
+          ...item,
+          price: parseFloat(item.price) || 0,
+          quantity: Math.max(1, parseInt(item.quantity, 10) || 1)
+        }));
+        renderCart();
+      } else {
+        list.innerHTML = "<p class='empty'>Please login first.</p>";
+      }
+    });
+
+function formatCurrency(value) {
+  return Number(value || 0).toLocaleString('th-TH', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+}
+
+function renderCart() {
+  list.innerHTML = "";
+  if (cart.length === 0) {
+    list.innerHTML = "<p class='empty'>Your basket is empty.</p>";
+    selectAll.checked = false;
+    updateTotal();
+    return;
+  }
+
+  cart.forEach((item, index) => {
+    const div = document.createElement("div");
+    div.className = "cart-item";
+
+    const unitPrice = Number(item.price) || 0;
+    const qty = Math.max(1, Number(item.quantity) || 1);
+    const lineTotal = unitPrice * qty;
+
+    div.innerHTML = `
+      <label class="check-container">
+        <input type="checkbox" class="select-item" data-index="${index}">
+        <span class="checkmark"></span>
+      </label>
+
+      <img src="${item.image || 'image/no-image.png'}" alt="${item.name}" class="product-thumb">
+
+      <div class="info">
+        <h3>${item.name}</h3>
+        <div class="quantity-controls" data-index="${index}">
+          <button type="button" class="qty-btn" data-action="decrease" data-index="${index}">−</button>
+          <input type="number" class="qty-input" min="1" value="${qty}" data-index="${index}">
+          <button type="button" class="qty-btn" data-action="increase" data-index="${index}">+</button>
+        </div>
+        <p class="detail">Unit: ${formatCurrency(unitPrice)} ฿</p>
+      </div>
+
+      <div class="price-area">
+        <p class="price">${formatCurrency(lineTotal)} ฿</p>
+      </div>
+
+      <button type="button" class="remove-btn" data-id="${item.id}" data-index="${index}">✖</button>
+    `;
+
+    list.appendChild(div);
+  });
+
+  selectAll.checked = false;
+  updateTotal();
+}
+
+// ✅ ลบสินค้า / ปรับจำนวน
+list.addEventListener("click", (e) => {
+  if (e.target.classList.contains("remove-btn")) {
+    const cartId = e.target.dataset.id;
+    const idx = Number(e.target.dataset.index);
+
+    fetch("backend/remove_from_cart.php", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ cart_id: cartId })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          cart.splice(idx, 1);
+          renderCart();
+        }
+      });
+  } else if (e.target.classList.contains("qty-btn")) {
+    const idx = Number(e.target.dataset.index);
+    const action = e.target.dataset.action;
+    const row = e.target.closest(".cart-item");
+    if (Number.isNaN(idx) || !row) return;
+
+    const currentQty = Math.max(1, Number(cart[idx]?.quantity) || 1);
+    const newQty = action === "increase" ? currentQty + 1 : currentQty - 1;
+    setQuantity(idx, newQty, row);
+  }
+});
+
+list.addEventListener("change", (e) => {
+  if (e.target.classList.contains("select-item")) {
+    const checkboxes = document.querySelectorAll(".select-item");
+    const checkedBoxes = document.querySelectorAll(".select-item:checked");
+    selectAll.checked = checkboxes.length > 0 && checkedBoxes.length === checkboxes.length;
+    updateTotal();
+  } else if (e.target.classList.contains("qty-input")) {
+    const idx = Number(e.target.dataset.index);
+    const row = e.target.closest(".cart-item");
+    let newQty = parseInt(e.target.value, 10);
+    if (!Number.isFinite(newQty) || newQty < 1) {
+      newQty = 1;
+      e.target.value = newQty;
+    }
+    setQuantity(idx, newQty, row);
+  }
+});
+
+// ✅ เลือกทั้งหมด
+selectAll.addEventListener("change", () => {
+  document.querySelectorAll(".select-item").forEach(cb => cb.checked = selectAll.checked);
+  updateTotal();
+});
+
+// ✅ ไปหน้า Payment พร้อมส่ง ID ของสินค้าที่เลือก
+checkoutBtn.addEventListener("click", () => {
+  const selectedIds = [];
+
+  document.querySelectorAll(".select-item:checked").forEach(cb => {
+    selectedIds.push(cart[cb.dataset.index].id);
+  });
+
+  if (selectedIds.length === 0) {
+    alert("Please select at least one item to checkout.");
+    return;
+  }
+
+  localStorage.setItem("selectedCartItems", JSON.stringify(selectedIds));
+  window.location.href = "payment.html";
+});
+
+function setQuantity(index, newQty, row) {
+  const item = cart[index];
+  if (!item) return;
+
+  const safeQty = Math.max(1, parseInt(newQty, 10) || 1);
+  if (safeQty === item.quantity) {
+    updateItemRow(row, item);
+    return;
+  }
+
+  const previousQty = item.quantity;
+  item.quantity = safeQty;
+  updateItemRow(row, item);
+  updateTotal();
+
+  updateQuantityOnServer(item.id, safeQty).catch(() => {
+    item.quantity = previousQty;
+    updateItemRow(row, item);
+    updateTotal();
+    alert("ไม่สามารถอัปเดตจำนวนสินค้าได้ กรุณาลองใหม่อีกครั้ง");
+  });
+}
+
+function updateItemRow(row, item) {
+  if (!row) return;
+  const input = row.querySelector(".qty-input");
+  const priceEl = row.querySelector(".price");
+  const detailEl = row.querySelector(".detail");
+
+  if (input) input.value = item.quantity;
+  if (detailEl) detailEl.textContent = `Unit: ${formatCurrency(item.price)} ฿`;
+  if (priceEl) priceEl.textContent = `${formatCurrency(item.price * item.quantity)} ฿`;
+}
+
+function updateQuantityOnServer(cartId, quantity) {
+  return fetch("backend/update_cart.php", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ cart_id: cartId, quantity })
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status !== "success") {
+        throw new Error(data.message || "Update failed");
+      }
+    });
+}
+
+function updateTotal() {
+  let total = 0;
+  const selected = document.querySelectorAll(".select-item:checked");
+
+  selected.forEach(cb => {
+    const item = cart[cb.dataset.index];
+    if (!item) return;
+    total += (item.price || 0) * (item.quantity || 0);
+  });
+
+  totalPriceEl.textContent = `${formatCurrency(total)} ฿`;
+  checkoutBtn.disabled = selected.length === 0;
+}
+
+  </script>
+
+</body>
+</html>

@@ -1,35 +1,49 @@
-<link rel="stylesheet" href="css/add_product.css">
-<form action="backend/add_product.php" method="POST" enctype="multipart/form-data">
-  <label>Product Name:</label>
-  <input type="text" name="name" required>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Product</title>
+  <link rel="stylesheet" href="css/add_product.css">
+</head>
+<body>
+  <div id="header-container"></div>
+  <script src="js/header-loader.js" defer></script>
 
-  <label>Category:</label>
-  <select name="categoryId" required>
-    <option value="">-- Select Category --</option>
-    <option value="1">Home</option>
-    <option value="2">Garden</option>
-    <option value="3">Fashion</option>
-    <option value="4">Makeup</option>
-    <option value="5">Electronic</option>
-    <option value="6">Health Care</option>
-    <option value="7">Food</option>
-    <option value="8">Education</option>
-  </select>
+  <main class="add-product-wrapper">
+    <form action="backend/add_product.php" method="POST" enctype="multipart/form-data" class="add-product-form">
+      <label for="productName">Product Name:</label>
+      <input type="text" id="productName" name="name" required>
 
-  <label>Description:</label>
-  <textarea name="description" rows="4" required></textarea>
+      <label for="categoryId">Category:</label>
+      <select id="categoryId" name="categoryId" required>
+        <option value="">-- Select Category --</option>
+        <option value="1">Home</option>
+        <option value="2">Garden</option>
+        <option value="3">Fashion</option>
+        <option value="4">Makeup</option>
+        <option value="5">Electronic</option>
+        <option value="6">Health Care</option>
+        <option value="7">Food</option>
+        <option value="8">Education</option>
+      </select>
 
-  <label>Price (THB):</label>
-  <input type="number" name="price" step="0.01" required>
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" rows="4" required></textarea>
 
-  <label>Stock:</label>
-  <input type="number" name="stock" required>
+      <label for="price">Price (THB):</label>
+      <input type="number" id="price" name="price" step="0.01" required>
 
-  <label>Size:</label>
-  <input type="text" name="size">
+      <label for="stock">Stock:</label>
+      <input type="number" id="stock" name="stock" required>
 
-  <label>Image:</label>
-  <input type="file" name="image" accept="image/*">
+      <label for="size">Size:</label>
+      <input type="text" id="size" name="size">
 
-  <button type="submit">Add Product</button>
-</form>
+      <label for="image">Image:</label>
+      <input type="file" id="image" name="image" accept="image/*">
+
+      <button type="submit">Add Product</button>
+    </form>
+  </main>
+</body>
+</html>

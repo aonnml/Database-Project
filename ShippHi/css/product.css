@@ -196,6 +196,12 @@ button:hover {
   border-radius: 12px; box-shadow: 0 12px 30px rgba(0,0,0,0.12);
   overflow: hidden;
 }
+
+/* ซ่อนเมนูเมื่อใช้ hidden attribute */
+.profile-menu[hidden] {
+  display: none !important;
+}
+
 .profile-menu a {
   display: block; padding: 10px 14px; color: #111; text-decoration: none;
   font: 500 14px/1.3 'Segoe UI', system-ui, sans-serif;

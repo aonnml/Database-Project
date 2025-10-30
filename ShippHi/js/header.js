@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-
+function initHeaderMenu() {
   const btn = document.getElementById("menuBtn");
   const menu = document.getElementById("profileMenu");
 
@@ -8,17 +7,26 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // เปิด/ปิดเมนูเมื่อกดปุ่ม
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    menu.toggleAttribute("hidden");
-  });
+  if (!btn.dataset.bound) {
+    btn.dataset.bound = "true";
 
-  // ปิดเมนูเมื่อคลิกนอกเมนู
-  document.addEventListener("click", (e) => {
-    if (!menu.contains(e.target) && !btn.contains(e.target)) {
-      menu.setAttribute("hidden", "");
-    }
-  });
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menu.toggleAttribute("hidden");
+    });
 
-});
+    document.addEventListener("click", (e) => {
+      if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.setAttribute("hidden", "");
+      }
+    });
+  }
+}
+
+window.initHeaderMenu = initHeaderMenu;
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initHeaderMenu);
+} else {
+  initHeaderMenu();
+}

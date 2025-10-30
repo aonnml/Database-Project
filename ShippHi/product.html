@@ -9,19 +9,7 @@
 
   <!-- ✅ Header จะถูกโหลดใส่ตรงนี้ -->
   <div id="header-container"></div>
-
-<script>
-fetch("components/header.html")
-  .then(res => res.text())
-  .then(html => {
-    document.getElementById("header-container").innerHTML = html;
-
-    // โหลด script ควบคุมเมนูหลังจาก header ถูกแทรกแล้ว
-    const script = document.createElement("script");
-    script.src = "js/header.js";
-    document.body.appendChild(script);
-  });
-</script>
+  <script src="js/header-loader.js" defer></script>
 
   <h1>Product List</h1>
 
