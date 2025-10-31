@@ -12,7 +12,7 @@ $payload = json_decode(file_get_contents('php://input'), true) ?? [];
 $cartIds = $payload['cartIds'] ?? [];
 
 if (!is_array($cartIds) || count($cartIds) === 0) {
-    echo json_encode(['success' => false, 'error' => 'ไม่พบสินค้าที่ต้องชำระ']);
+    echo json_encode(['success' => false, 'error' => 'Not found product to payment']);
     exit;
 }
 
@@ -23,7 +23,7 @@ $cartIds = array_filter($cartIds, function ($id) {
 $cartIds = array_values(array_unique($cartIds));
 
 if (count($cartIds) === 0) {
-    echo json_encode(['success' => false, 'error' => 'ไม่พบสินค้าที่ต้องชำระ']);
+    echo json_encode(['success' => false, 'error' => 'Not found product to payment']);
     exit;
 }
 
@@ -52,7 +52,7 @@ try {
     $selectStmt->close();
 
     if (count($selectedItems) === 0) {
-        throw new Exception('ไม่พบสินค้าที่เลือกไว้ในตะกร้า');
+        throw new Exception('The selected product was not found');
     }
 
     $insertStmt = $conn->prepare("INSERT INTO review (userId, productId, rate, description, is_reviewed) VALUES (?, ?, 0, '', 0)");
@@ -106,7 +106,7 @@ try {
     $conn->rollback();
     echo json_encode([
         'success' => false,
-        'error' => 'ไม่สามารถทำรายการได้ กรุณาลองใหม่'
+        'error' => 'Unable to complete, Try again'
     ]);
 }
 
