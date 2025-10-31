@@ -12,6 +12,8 @@
   <div id="header-container"></div>
   <script src="js/header-loader.js" defer></script>
 
+  <button class="back-btn" onclick="history.back()">←</button>
+
   <h1>My Basket</h1>
   <div id="cart-list" class="cart-grid"></div>
 
@@ -196,7 +198,7 @@ function setQuantity(index, newQty, row) {
     item.quantity = previousQty;
     updateItemRow(row, item);
     updateTotal();
-    alert("ไม่สามารถอัปเดตจำนวนสินค้าได้ กรุณาลองใหม่อีกครั้ง");
+    alert("Unable to update product quantity. Please try again.");
   });
 }
 
