@@ -82,7 +82,7 @@ body {
   background: none;
   border: none;
   font-size: 26px;
-  color: #ffd5de;
+  color: #ff94b1;
   cursor: pointer;
   transition: transform 0.15s ease, color 0.15s ease, text-shadow 0.15s ease;
   line-height: 1;
@@ -92,7 +92,7 @@ body {
 .star-btn:hover,
 .star-btn:focus {
   transform: translateY(-2px) scale(1.05);
-  color: #ffe4ec;
+  color: #ffb3c5;
   outline: none;
 }
 

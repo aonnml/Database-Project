@@ -9,7 +9,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return Array.from({ length: MAX_RATING }, (_, idx) => {
       const value = idx + 1;
       const isFilled = rating >= value;
-      return `<button type="button" class="star-btn${isFilled ? " filled" : ""}" data-star="${value}" role="radio" aria-label="${value} star${value > 1 ? "s" : ""}" aria-checked="${isFilled}" tabindex="0">★</button>`;
+      const starChar = isFilled ? "★" : "☆";
+      return `<button type="button" class="star-btn${isFilled ? " filled" : ""}" data-star="${value}" role="radio" aria-label="${value} star${value > 1 ? "s" : ""}" aria-checked="${isFilled}" tabindex="0">${starChar}</button>`;
     }).join("");
   }
 
@@ -19,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const isActive = starValue <= ratingValue;
       btn.classList.toggle("filled", isActive);
       btn.setAttribute("aria-checked", isActive);
+      btn.textContent = isActive ? "★" : "☆";
     });
   }
 

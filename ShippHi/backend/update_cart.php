@@ -38,13 +38,22 @@ if (!$stmt) {
 }
 
 $stmt->bind_param('iii', $quantity, $cartId, $userId);
+$conn->begin_transaction();
 
-if ($stmt->execute()) {
+try {
+    if (!$stmt->execute()) {
+        throw new Exception('execute failed');
+    }
+
+    $conn->commit();
+
     echo json_encode([
         'status' => 'success',
         'quantity' => $quantity
     ]);
-} else {
+} catch (Throwable $e) {
+    $conn->rollback();
+
     echo json_encode([
         'status' => 'error',
         'message' => 'Could not update quantity'

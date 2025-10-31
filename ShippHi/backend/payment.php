@@ -53,21 +53,35 @@ if (!$stmt) {
 }
 
 $stmt->bind_param($types, ...$params);
-$stmt->execute();
-$result = $stmt->get_result();
+$conn->begin_transaction();
 
-$cartItems = [];
-$totalPrice = 0;
+try {
+    if (!$stmt->execute()) {
+        throw new Exception('execute failed');
+    }
 
-while ($row = $result->fetch_assoc()) {
-    $cartItems[] = $row;
-    $totalPrice += (float) $row['subtotal'];
+    $result = $stmt->get_result();
+
+    $cartItems = [];
+    $totalPrice = 0;
+
+    while ($row = $result->fetch_assoc()) {
+        $cartItems[] = $row;
+        $totalPrice += (float) $row['subtotal'];
+    }
+
+    $conn->commit();
+
+    echo json_encode([
+        'cartItems' => $cartItems,
+        'totalPrice' => $totalPrice
+    ]);
+} catch (Throwable $e) {
+    $conn->rollback();
+    echo json_encode([
+        'error' => 'Database error'
+    ]);
 }
-
-echo json_encode([
-    'cartItems' => $cartItems,
-    'totalPrice' => $totalPrice
-]);
 
 $stmt->close();
 $conn->close();

@@ -60,3 +60,8 @@ INSERT INTO `category` (`id`, `name`) VALUES
   ('6','HealthCare'),
   ('7','Food'),
   ('8','Education');
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_product_category ON product(categoryId);
+CREATE INDEX idx_cart_user_product ON cart(userId, productId);
+CREATE INDEX idx_review_product ON review(productId);

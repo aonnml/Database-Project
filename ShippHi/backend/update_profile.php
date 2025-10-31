@@ -54,6 +54,8 @@ if ($imageStmt) {
 }
 
 $profileImagePath = $currentImagePath;
+$newlyUploadedPath = null;
+$oldImagePathToDelete = null;
 
 if (!empty($_FILES['profileImage']) && $_FILES['profileImage']['error'] !== UPLOAD_ERR_NO_FILE) {
     if ($_FILES['profileImage']['error'] !== UPLOAD_ERR_OK) {
@@ -112,14 +114,11 @@ if (!empty($_FILES['profileImage']) && $_FILES['profileImage']['error'] !== UPLO
         exit;
     }
 
-    if ($currentImagePath && strpos($currentImagePath, 'uploads/') === 0) {
-        $oldImagePath = __DIR__ . '/../' . $currentImagePath;
-        if (is_file($oldImagePath)) {
-            @unlink($oldImagePath);
-        }
-    }
-
     $profileImagePath = 'uploads/' . $newFileName;
+    $newlyUploadedPath = __DIR__ . '/../' . $profileImagePath;
+    if ($currentImagePath && strpos($currentImagePath, 'uploads/') === 0) {
+        $oldImagePathToDelete = __DIR__ . '/../' . $currentImagePath;
+    }
 }
 
 if (!$profileImagePath) {
@@ -130,30 +129,44 @@ $sql = "UPDATE users
         SET name = ?, lastname = ?, address = ?, phoneNum = ?, email = ?, profile_image = ?
         WHERE id = ?";
 
-$stmt = $conn->prepare($sql);
+$conn->begin_transaction();
 
-if (!$stmt) {
-    echo json_encode([
-        'status' => 'error',
-        'message' => 'Database error'
-    ]);
-    exit;
-}
+try {
+    $stmt = $conn->prepare($sql);
 
-$stmt->bind_param('ssssssi', $name, $lastname, $address, $phone, $email, $profileImagePath, $userId);
+    if (!$stmt) {
+        throw new Exception('prepare failed');
+    }
 
-if ($stmt->execute()) {
+    $stmt->bind_param('ssssssi', $name, $lastname, $address, $phone, $email, $profileImagePath, $userId);
+
+    if (!$stmt->execute()) {
+        throw new Exception('execute failed');
+    }
+
+    $stmt->close();
+    $conn->commit();
+
     echo json_encode([
         'status' => 'success',
         'profile_image' => $profileImagePath
     ]);
-} else {
+
+    if ($oldImagePathToDelete && is_file($oldImagePathToDelete)) {
+        @unlink($oldImagePathToDelete);
+    }
+} catch (Throwable $e) {
+    $conn->rollback();
+
+    if ($newlyUploadedPath && is_file($newlyUploadedPath)) {
+        @unlink($newlyUploadedPath);
+    }
+
     echo json_encode([
         'status' => 'error',
         'message' => 'Failed to update profile.'
     ]);
 }
 
-$stmt->close();
 $conn->close();
 ?>
