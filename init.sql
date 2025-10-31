@@ -7,33 +7,9 @@ CREATE TABLE IF NOT EXISTS users (
     lastname VARCHAR(100) NOT NULL,
     address VARCHAR(255),
     email VARCHAR(150) NOT NULL UNIQUE,
-    profile_image VARCHAR(255) DEFAULT 'image/user.jpg'
-);
-
-ALTER TABLE users
-ADD phoneNum VARCHAR(15),
-ADD password VARCHAR(100) NOT NULL;
-
-ALTER TABLE users
-ADD COLUMN IF NOT EXISTS profile_image VARCHAR(255) DEFAULT 'image/user.jpg';
-
-CREATE TABLE IF NOT EXISTS saler (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    lastname VARCHAR(100) NOT NULL,
-    email VARCHAR(150) NOT NULL UNIQUE,
-    password VARCHAR(100) NOT NULL,
-    phoneNum VARCHAR(15) NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS order_header (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT,
-    salerId INT,
-    order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    totalPrice INT NOT NULL, 
-    FOREIGN KEY (userId) REFERENCES users(id),
-    FOREIGN KEY (salerId) REFERENCES saler(id) 
+    profile_image VARCHAR(255) DEFAULT 'image/user.jpg',
+    phoneNum VARCHAR(15),
+    password VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS category(
@@ -51,14 +27,6 @@ CREATE TABLE IF NOT EXISTS product (
     stock INT NOT NULL DEFAULT 0,
     image VARCHAR(255),
     FOREIGN KEY (categoryId) REFERENCES category(id)
-);
-
-CREATE TABLE IF NOT EXISTS order_detail (
-    orderId INT ,
-    productId INT,
-    quantity INT NOT NULL,
-    FOREIGN KEY (orderId) REFERENCES order_header(id),
-    FOREIGN KEY (productId) REFERENCES product(id)
 );
 
 CREATE TABLE IF NOT EXISTS review(
