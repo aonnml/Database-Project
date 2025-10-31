@@ -20,6 +20,7 @@ body {
   color: white;
   cursor: pointer;
   font-weight: 600;
+  font-size: 16px;
   transition: 0.25s;
 }
 
@@ -32,24 +33,25 @@ body {
   border-bottom: 3px solid white;
 }
 
-/* Review Card */
+/* ปรับขนาด Review Card ให้ไม่เต็มจอ */
 .review-card {
   background: #ffffff;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(255, 120, 156, 0.2);
-  margin: 18px;
+  margin: 22px auto;    
   padding: 18px;
   transition: 0.25s;
+  max-width: 800px;      
+  width: 90%;            
+}
+
+.review-card img {
+  width: 110px;       
 }
 
 .review-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(255, 120, 156, 0.28);
-}
-
-.review-card img {
-  width: 100px;
-  border-radius: 12px;
 }
 
 .review-card textarea {
@@ -68,6 +70,42 @@ body {
   outline: none;
   border-color: #ff87ad;
   box-shadow: 0 0 0 3px rgba(255, 140, 185, 0.25);
+}
+
+.rating-stars {
+  display: inline-flex;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 26px;
+  color: #ffd5de;
+  cursor: pointer;
+  transition: transform 0.15s ease, color 0.15s ease, text-shadow 0.15s ease;
+  line-height: 1;
+  padding: 2px;
+}
+
+.star-btn:hover,
+.star-btn:focus {
+  transform: translateY(-2px) scale(1.05);
+  color: #ffe4ec;
+  outline: none;
+}
+
+.star-btn.filled {
+  color: #ffb300;
+  text-shadow: 0 3px 8px rgba(255, 179, 0, 0.35);
+}
+
+.empty-state {
+  text-align: center;
+  color: #ffeef4;
+  font-weight: 500;
+  margin: 40px 0;
 }
 
 /* ปุ่มส่งรีวิว */
@@ -93,7 +131,7 @@ body {
 header {
   display: flex;
   align-items: center;
-  background-color: #ff8eb0;
+  background-color: #ff9bb2;
   color: white;
   padding: 12px 15px;
   position: relative;
