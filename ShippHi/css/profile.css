@@ -1,9 +1,7 @@
 body {
   font-family: "Prompt", "Poppins", sans-serif;
   background: linear-gradient(135deg, #ff9bb2, #ff6f75);
-  display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 0;
   padding: 20px;
 }
@@ -223,6 +221,7 @@ body {
   position: sticky; top: 0; z-index: 1000;
   background: #ffffff;
   border-bottom: 1px solid rgba(0,0,0,0.05);
+  width: 100%;
 }
 
 .topbar__inner {
@@ -290,4 +289,10 @@ body {
 /* Responsive */
 @media (max-width: 480px) {
   .topbar__title { display: none; }
+}
+
+.page-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
