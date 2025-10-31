@@ -1,8 +1,9 @@
 <?php
 session_start();
 header('Content-Type: application/json');
-
-$userId = $_SESSION['user_id'];
+header("Cache-Control: no-cache, must-revalidate");
+header("Pragma: no-cache");
+header("Expires: 0");
 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['error' => 'User not logged in']);

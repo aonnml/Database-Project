@@ -76,7 +76,7 @@
   let profileData = null;
   let activePreviewUrl = null;
 
-    fetch("backend/profile.php", { credentials: 'include' })
+    fetch("backend/profile.php", { credentials: 'include', cache: "no-store" })
       .then(res => res.json())
       .then(data => {
         if (data.error) {
