@@ -8,10 +8,11 @@
 </head>
 <body>
 
+  <!-- ✅ Header จะถูกโหลดใส่ตรงนี้ -->
   <div id="header-container"></div>
   <script src="js/header-loader.js" defer></script>
 
-  <h1>🛒 My Basket</h1>
+  <h1>My Basket</h1>
   <div id="cart-list" class="cart-grid"></div>
 
   <div class="cart-footer">
@@ -32,7 +33,7 @@
   const checkoutBtn = document.getElementById("checkoutBtn");
   const totalPriceEl = document.getElementById("totalPrice");
 
-  // ✅ ดึงข้อมูลจาก DB ผ่าน backend
+  // ดึงข้อมูลจาก DB ผ่าน backend
   fetch("backend/get_cart.php", { credentials: "include" })
     .then(res => res.json())
     .then(data => {
@@ -104,7 +105,7 @@ function renderCart() {
   updateTotal();
 }
 
-// ✅ ลบสินค้า / ปรับจำนวน
+// ลบสินค้า / ปรับจำนวน
 list.addEventListener("click", (e) => {
   if (e.target.classList.contains("remove-btn")) {
     const cartId = e.target.dataset.id;
@@ -153,13 +154,13 @@ list.addEventListener("change", (e) => {
   }
 });
 
-// ✅ เลือกทั้งหมด
+// เลือกทั้งหมด
 selectAll.addEventListener("change", () => {
   document.querySelectorAll(".select-item").forEach(cb => cb.checked = selectAll.checked);
   updateTotal();
 });
 
-// ✅ ไปหน้า Payment พร้อมส่ง ID ของสินค้าที่เลือก
+// ไปหน้า Payment พร้อมส่ง ID ของสินค้าที่เลือก
 checkoutBtn.addEventListener("click", () => {
   const selectedIds = [];
 

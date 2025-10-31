@@ -21,7 +21,7 @@ body {
 /* ฝั่งซ้าย */
 .left {
   flex: 1;
-  background: linear-gradient(135deg, #ff8eb4, #ff6fa1);
+  background: linear-gradient(135deg, #ff9bb2, #ff6f75);
   color: white;
   text-align: center;
   padding: 50px 25px;
@@ -48,7 +48,7 @@ body {
   display: block;
   margin-top: 12px;
   font-weight: 600;
-  color: #b23567;
+  color: #b23558;
 }
 
 /* Input & Textarea */
@@ -99,12 +99,12 @@ body {
 
 /* ปุ่ม ตกลง */
 .ok {
-  background: #ff7fb0;
+  background: #ff7f9b;
   color: white;
   border: none;
   box-shadow: 0 4px 12px rgba(255, 120, 156, 0.35);
 }
 .ok:hover {
-  background: #d86591;
+  background: #ff7f9b;
   box-shadow: 0 6px 16px rgba(255, 120, 156, 0.45);
 }

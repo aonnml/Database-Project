@@ -3,7 +3,7 @@
    =============================== */
 body {
   font-family: "Prompt", "Poppins", sans-serif;
-  background: linear-gradient(135deg, #ffe3ef, #f9f5f7);
+  background: linear-gradient(135deg, #ff9bb2, #ff6f75);
   margin: 0;
   padding: 0;
   color: #444;
@@ -14,9 +14,10 @@ h1 {
   text-align: center;
   padding: 30px 0 10px;
   margin: 0;
-  color: #c62978;
+  color: #ffffff;
   letter-spacing: 0.5px;
   font-weight: 600;
+  font-size: 35px;
 }
 
 /* ===============================
@@ -60,7 +61,7 @@ h1 {
 /* ชื่อสินค้า */
 .card h3 {
   margin: 10px 0 5px;
-  font-size: 18px;
+  font-size: 19px;
   text-align: center;
   font-weight: 500;
 }
@@ -82,25 +83,25 @@ h1 {
 /* ขนาด */
 .size {
   color: #7a6876;
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* ปุ่ม */
 button {
   margin-top: 12px;
-  background: #ff7fb0;
+  background: #fb5f83;
   color: white;
   border: none;
   border-radius: 10px;
   padding: 10px 18px;
-  font-size: 14px;
+  font-size: 15px;
   cursor: pointer;
   transition: 0.3s;
   box-shadow: 0 4px 12px rgba(255, 120, 156, 0.3);
 }
 
 button:hover {
-  background: #d86591;
+  background: #aa5569;
 }
 
 /* เมื่อไม่มีสินค้า */
@@ -125,7 +126,7 @@ button:hover {
 }
 
 .category-bar button {
-  background: #ffe0ec;
+  background: #f9ebf0;
   border: none;
   border-radius: 20px;
   padding: 8px 16px;
@@ -136,12 +137,12 @@ button:hover {
 }
 
 .category-bar button:hover {
-  background: #ff7fb0;
+  background: #f55d81;
   color: #fff;
 }
 
 .category-bar button.active {
-  background: #ff7fb0;
+  background: #f55d81;
   color: white;
   box-shadow: 0 4px 12px rgba(255, 120, 156, 0.35);
 }

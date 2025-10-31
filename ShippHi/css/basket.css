@@ -4,7 +4,7 @@
 
 body {
   font-family: 'Prompt', 'Poppins', sans-serif;
-  background: linear-gradient(135deg, #ffe6f3, #ffffff);
+  background: linear-gradient(135deg, #ff9bb2, #ff6f75);
   margin: 0;
   padding: 0;
   color: #444;
@@ -13,7 +13,7 @@ body {
 h1 {
   text-align: center;
   padding: 24px 0;
-  color: #c62978;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -46,7 +46,7 @@ h1 {
 }
 
 .cart-item:hover {
-  transform: translateY(-2px);
+  transform: translateY(-5px);
   box-shadow: 0 6px 20px rgba(255, 78, 159, 0.23);
 }
 
@@ -149,7 +149,7 @@ h1 {
 }
 
 .check-container input:checked + .checkmark {
-  background: #ff75b5;
+  background: #e0435a;
 }
 
 /* Footer */
@@ -160,25 +160,27 @@ h1 {
   max-width: 800px;
   margin: 35px auto;
   padding: 0 20px;
+  color: #fff;
 }
 
 button#checkoutBtn {
-  background: #ff7dbb;
+  background: #e0435a;
   color: white;
   border: none;
   border-radius: 10px;
   padding: 12px 26px;
   font-weight: 600;
+  font-size: 18px;
   cursor: pointer;
   transition: 0.3s;
 }
 button#checkoutBtn:hover {
-  background: #e863a3;
+  background: #e0435a;
   box-shadow: 0 4px 12px rgba(255, 78, 159, 0.35);
 }
 
 button#checkoutBtn[disabled] {
-  background: #c6b8c1;
+  background: #998c94;
   cursor: not-allowed;
 }
 
@@ -188,4 +190,80 @@ button#checkoutBtn[disabled] {
   color: #b07ca2;
   font-size: 18px;
   margin-top: 60px;
+}
+
+/* ===============================
+   TOPBAR
+   =============================== */
+.topbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 64px;
+}
+
+/* Brand */
+.topbar__brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.topbar__logo {
+  width: 48px; height: auto;
+}
+.topbar__title {
+  font: 600 18px/1.2 "Prompt", sans-serif;
+  color: #c62978;
+}
+
+/* Actions */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  position: relative;
+}
+
+/* Avatar Button */
+.avatar-btn {
+  background: transparent; border: none; cursor: pointer;
+  padding: 4px; border-radius: 50%;
+}
+.avatar-btn:hover { background: rgba(255, 120, 156, 0.18); }
+
+.avatar-icon { width: 36px; height: 36px; }
+
+/* Dropdown */
+.profile-menu {
+  position: absolute; right: 0; top: calc(100% + 8px);
+  min-width: 180px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 16px 28px rgba(255, 120, 156, 0.28);
+  overflow: hidden;
+  border: 1px solid rgba(255, 120, 156, 0.25);
+}
+
+.profile-menu[hidden] { display: none !important; }
+
+.profile-menu a {
+  display: block; padding: 10px 14px; text-decoration: none;
+  font: 500 14px/1.3 "Prompt";
+  color: #444;
+}
+.profile-menu a:hover { background: #fff1f7; }
+
+.profile-menu .danger { color: #d83b63; }
+
+.profile-menu hr { border: none; height: 1px; background: #fad2e2; margin: 6px 0; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .topbar__title { display: none; }
 }

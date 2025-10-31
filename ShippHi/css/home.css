@@ -25,10 +25,9 @@ body {
 
 /* ข้อความ */
 h1 {
-  font-size: 1.25em;
+  font-size: 1.2em;
   margin-bottom: 18px;
-  text-shadow: 1px 3px rgba(0,0,0,0.15);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* โลโก้หลัก */
@@ -53,6 +52,7 @@ h1 {
   color: #ff4f68;
   padding: 12px 42px;
   font-weight: 600;
+  font-size: 18px;
   border-radius: 30px;
   box-shadow: 0 6px 14px rgba(255, 78, 130, 0.35);
   transition: 0.3s;
@@ -61,7 +61,7 @@ h1 {
 .btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 10px 18px rgba(255, 78, 130, 0.45);
-  background: #fff2f6;
+  background: #ffd4d7;
 }
 
 /* Responsive */

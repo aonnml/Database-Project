@@ -7,8 +7,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+  <!-- ✅ Header จะถูกโหลดใส่ตรงนี้ -->
   <div id="header-container"></div>
   <script src="js/header-loader.js" defer></script>
+
   <button onclick="window.location.href='product.html'" class="back-btn">←</button>
 
   <div class="profile-container">
@@ -71,7 +73,7 @@
     const profileImageEl = document.getElementById('profileImage');
     const profileImageInput = document.getElementById('inputProfileImage');
 
-    let profileData = null;
+  let profileData = null;
   let activePreviewUrl = null;
 
     fetch("backend/profile.php", { credentials: 'include' })

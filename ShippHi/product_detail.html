@@ -14,10 +14,12 @@
 </head>
 <body>
 
+  <!-- ✅ Header จะถูกโหลดใส่ตรงนี้ -->
   <div id="header-container"></div>
+  <script src="js/header-loader.js" defer></script>
 
   <div class="container">
-    <button class="back-btn" onclick="history.back()">← Back</button>
+    <button class="back-btn" onclick="history.back()">←</button>
 
     <div class="product">
       <div class="img-box">
@@ -35,15 +37,15 @@
 
   <p id="product-description"></p>
 
-<button class="add-btn" id="addToCartBtn">🛒 เพิ่มลงตะกร้า</button>
+<button class="add-btn" id="addToCartBtn">add to cart</button>
 </div>
     </div>
   </div>
 
- <!-- 🛒 Popup เลือกจำนวน -->
+ <!-- Popup เลือกจำนวน -->
 <div id="qtyModal" class="bottom-sheet" hidden>
   <div class="bottom-sheet-content">
-    <h3>เลือกจำนวนสินค้า</h3>
+    <h3>Select the quantity of product</h3>
 
     <div class="qty-box">
       <button class="qty-btn" onclick="changeQty(-1)">-</button>
@@ -52,8 +54,8 @@
     </div>
 
     <div class="sheet-actions">
-      <button class="cancel-btn" onclick="closeQtyModal()">ยกเลิก</button>
-      <button class="ok-btn" onclick="confirmAddToCart()">เพิ่มลงตะกร้า</button>
+      <button class="cancel-btn" onclick="closeQtyModal()">cancle</button>
+      <button class="ok-btn" onclick="confirmAddToCart()">add to cart</button>
     </div>
   </div>
 </div>
@@ -156,9 +158,5 @@ document.addEventListener("click", function(e) {
 });
 
 </script>
-
 </body>
-
-  <div id="header-container"></div>
-  <script src="js/header-loader.js" defer></script>
 </html>

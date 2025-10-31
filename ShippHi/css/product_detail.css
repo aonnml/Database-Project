@@ -1,6 +1,6 @@
 body {
   font-family: "Prompt", "Poppins", sans-serif;
-  background: linear-gradient(135deg, #ffe3ef, #f9f5f7);
+  background: linear-gradient(135deg, #ff9bb2, #ff6f75);
   padding: 30px;
   margin: 0;
   color: #444;
@@ -10,6 +10,7 @@ body {
   max-width: 850px;
   background: #ffffff;
   margin: auto;
+  margin-top: 80px;
   padding: 28px;
   border-radius: 18px;
   box-shadow: 0 6px 20px rgba(255, 122, 156, 0.25);
@@ -157,5 +158,82 @@ body {
   background: #ff7fb0;
   color: #fff;
   border: none;
+  display: flex;
   border-radius: 8px;
+}
+
+/* ===============================
+   TOPBAR
+   =============================== */
+.topbar {
+  position: sticky; top: 0; z-index: 1000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.topbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 64px;
+}
+
+/* Brand */
+.topbar__brand {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.topbar__logo {
+  width: 48px; height: auto;
+}
+.topbar__title {
+  font: 600 18px/1.2 "Prompt", sans-serif;
+  color: #c62978;
+}
+
+/* Actions */
+.topbar__actions {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  position: relative;
+}
+
+/* Avatar Button */
+.avatar-btn {
+  background: transparent; border: none; cursor: pointer;
+  padding: 4px; border-radius: 50%;
+}
+.avatar-btn:hover { background: rgba(255, 120, 156, 0.18); }
+
+.avatar-icon { width: 36px; height: 36px; }
+
+/* Dropdown */
+.profile-menu {
+  position: absolute; right: 0; top: calc(100% + 8px);
+  min-width: 180px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 16px 28px rgba(255, 120, 156, 0.28);
+  overflow: hidden;
+  border: 1px solid rgba(255, 120, 156, 0.25);
+}
+
+.profile-menu[hidden] { display: none !important; }
+
+.profile-menu a {
+  display: block; padding: 10px 14px; text-decoration: none;
+  font: 500 14px/1.3 "Prompt";
+  color: #444;
+}
+.profile-menu a:hover { background: #fff1f7; }
+
+.profile-menu .danger { color: #d83b63; }
+
+.profile-menu hr { border: none; height: 1px; background: #fad2e2; margin: 6px 0; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .topbar__title { display: none; }
 }
