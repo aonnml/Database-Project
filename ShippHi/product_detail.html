@@ -28,6 +28,7 @@
 
       <div class="details">
   <h2 id="product-name"></h2>
+  <div id="product-rating" class="product-rating"></div>
   <p class="price" id="product-price"></p>
 
   <p><strong>Size:</strong> <span id="product-size"></span></p>
@@ -40,6 +41,14 @@
 <button class="add-btn" id="addToCartBtn">add to cart</button>
 </div>
     </div>
+
+    <section class="reviews-section">
+      <div class="reviews-header">
+        <h3>Customer Reviews</h3>
+        <div id="reviews-summary" class="reviews-summary"></div>
+      </div>
+      <div id="reviews-list" class="reviews-list"></div>
+    </section>
   </div>
 
  <!-- Popup เลือกจำนวน -->
@@ -79,6 +88,9 @@ let qty = 1;
 const qtyModal = document.getElementById("qtyModal");
 const qtyValue = document.getElementById("qtyValue");
 const addToCartBtn = document.getElementById("addToCartBtn");
+const productRatingEl = document.getElementById("product-rating");
+const reviewsSummaryEl = document.getElementById("reviews-summary");
+const reviewsListEl = document.getElementById("reviews-list");
 
 if (addToCartBtn) {
   addToCartBtn.disabled = true;
@@ -91,6 +103,105 @@ if (addToCartBtn) {
 const params = new URLSearchParams(window.location.search);
 const id = params.get('id');
 
+function renderStars(score) {
+  const rating = Number(score) || 0;
+  const stars = [];
+  for (let i = 1; i <= 5; i += 1) {
+    if (rating >= i) {
+      stars.push('<span class="star filled">★</span>');
+    } else if (rating >= i - 0.5) {
+      stars.push('<span class="star half">★</span>');
+    } else {
+      stars.push('<span class="star">★</span>');
+    }
+  }
+  return stars.join('');
+}
+
+function renderProductRating(average, count) {
+  if (!productRatingEl) return;
+  const reviews = Number(count) || 0;
+  const ratingValue = reviews > 0 ? Number(average) || 0 : 0;
+  const starsMarkup = renderStars(ratingValue);
+
+  if (reviews === 0) {
+    productRatingEl.innerHTML = `
+      <div class="stars" aria-label="No reviews yet">${starsMarkup}</div>
+      <span class="rating-empty">No reviews yet</span>
+    `;
+    return;
+  }
+
+  const rounded = ratingValue.toFixed(1);
+  productRatingEl.innerHTML = `
+    <div class="stars" aria-label="Average rating ${rounded} out of 5">${starsMarkup}</div>
+    <span class="rating-value">${rounded}</span>
+    <span class="rating-count">(${reviews})</span>
+  `;
+}
+
+function formatReviewDate(dateString) {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  if (Number.isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString('th-TH', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+}
+
+function renderReviewsSummary(average, count) {
+  if (!reviewsSummaryEl) return;
+  const reviews = Number(count) || 0;
+  const ratingValue = reviews > 0 ? Number(average) || 0 : 0;
+  const starsMarkup = renderStars(ratingValue);
+
+  if (reviews === 0) {
+    reviewsSummaryEl.innerHTML = `
+      <div class="summary-stars" aria-label="No reviews yet">${starsMarkup}</div>
+      <span class="summary-text">ยังไม่มีรีวิวสำหรับสินค้า</span>
+    `;
+    return;
+  }
+
+  const rounded = ratingValue.toFixed(1);
+  reviewsSummaryEl.innerHTML = `
+    <div class="summary-stars" aria-label="Average rating ${rounded} out of 5">${starsMarkup}</div>
+    <div class="summary-text"><strong>${rounded}</strong> จาก ${reviews} รีวิว</div>
+  `;
+}
+
+function renderReviewsList(reviews) {
+  if (!reviewsListEl) return;
+  if (!reviews || reviews.length === 0) {
+    reviewsListEl.innerHTML = '<p class="review-empty">ยังไม่มีรีวิวสำหรับสินค้านี้</p>';
+    return;
+  }
+
+  const items = reviews.map(review => {
+    const stars = renderStars(review.rate);
+    const reviewerName = [review.reviewer_name, review.reviewer_lastname].filter(Boolean).join(' ') || 'Anonymous';
+    const reviewDate = formatReviewDate(review.review_date);
+    const description = review.description ? review.description.replace(/\n/g, '<br>') : '';
+
+    return `
+      <article class="review-card">
+        <header class="review-header">
+          <div class="reviewer">
+            <span class="reviewer-name">${reviewerName}</span>
+            <span class="review-date">${reviewDate}</span>
+          </div>
+          <div class="review-stars" aria-label="Rated ${review.rate} out of 5">${stars}</div>
+        </header>
+        <p class="review-body">${description || '<em>ไม่มีคำรีวิว</em>'}</p>
+      </article>
+    `;
+  });
+
+  reviewsListEl.innerHTML = items.join('');
+}
+
 fetch(`backend/product_detail.php?id=${id}`)
   .then(res => res.json())
   .then(p => {
@@ -100,12 +211,17 @@ fetch(`backend/product_detail.php?id=${id}`)
     }
 
     document.getElementById('product-name').innerHTML = p.name;
-    document.getElementById('product-price').innerText = `${p.price} ฿`;
+    const priceNumber = Number(p.price) || 0;
+    document.getElementById('product-price').innerText = `${priceNumber.toLocaleString('th-TH')} ฿`;
     document.getElementById('product-size').innerText = p.size || '-';
     document.getElementById('product-stock').innerText = p.stock;
     document.getElementById('product-description').innerHTML = p.description || 'No description available.';
-    document.getElementById('product-image').src = p.image ? p.image : 'images/no-image.png';
+    document.getElementById('product-image').src = p.image ? p.image : 'image/no-image.png';
     document.getElementById('product-category').innerText = p.category || '-';
+
+    renderProductRating(p.average_rating, p.review_count);
+    renderReviewsSummary(p.average_rating, p.review_count);
+    renderReviewsList(p.reviews || []);
 
     selectedProductId = p.id;
     if (addToCartBtn) {

@@ -72,6 +72,62 @@ h1 {
   font-size: 14px;
 }
 
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  min-height: 24px;
+}
+
+.stars {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.star {
+  position: relative;
+  font-size: 18px;
+  color: #ffe2eb;
+  line-height: 1;
+}
+
+.star.filled {
+  color: #ffb300;
+  text-shadow: 0 3px 8px rgba(255, 179, 0, 0.35);
+}
+
+.star.half {
+  color: #ffe2eb;
+}
+
+.star.half::before {
+  content: "★";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #ffb300;
+  text-shadow: 0 3px 8px rgba(255, 179, 0, 0.35);
+}
+
+.rating-value {
+  font-weight: 600;
+  color: #e05492;
+  font-size: 14px;
+}
+
+.rating-count {
+  font-size: 13px;
+  color: #8f7286;
+}
+
+.rating-empty {
+  font-size: 13px;
+  color: #c19aad;
+}
+
 /* ราคา */
 .price {
   color: #e54e93;

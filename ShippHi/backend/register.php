@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-// รับค่าจากฟอร์ม
+//รับค่าจากฟอร์ม
 $name = $_POST['name'] ?? '';
 $lastname = $_POST['lastname'] ?? '';
 $address = $_POST['address'] ?? '';
@@ -9,7 +9,7 @@ $phoneNum = $_POST['phoneNum'] ?? '';
 $email = $_POST['email'] ?? '';
 $password_plain = $_POST['password'] ?? '';
 
-// เช็คอีเมลซ้ำ
+//เช็คอีเมลซ้ำ
 $check_sql = "SELECT id FROM users WHERE email = ?";
 $stmt = $conn->prepare($check_sql);
 $stmt->bind_param("s", $email);
@@ -21,10 +21,10 @@ if ($stmt->num_rows > 0) {
     exit;
 }
 
-// Hash password
+//Hash password
 $password_hashed = password_hash($password_plain, PASSWORD_DEFAULT);
 
-// บันทึกข้อมูล
+//บันทึกข้อมูล
 $sql = "INSERT INTO users (name, lastname, address, phoneNum, email, password)
         VALUES (?, ?, ?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);

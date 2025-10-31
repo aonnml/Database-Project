@@ -41,6 +41,47 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(err => console.error('Error fetching products:', err));
 });
 
+function renderStars(score) {
+  const rating = Number(score) || 0;
+  const stars = [];
+
+  for (let i = 1; i <= 5; i += 1) {
+    if (rating >= i) {
+      stars.push('<span class="star filled">★</span>');
+    } else if (rating >= i - 0.5) {
+      stars.push('<span class="star half">★</span>');
+    } else {
+      stars.push('<span class="star">★</span>');
+    }
+  }
+
+  return stars.join('');
+}
+
+function createRatingMarkup(average, reviewCount) {
+  const ratingValue = Number(average) || 0;
+  const reviews = Number(reviewCount) || 0;
+  const starsHtml = renderStars(reviews > 0 ? ratingValue : 0);
+
+  if (reviews === 0) {
+    return `
+      <div class="rating" aria-label="No reviews yet">
+        <div class="stars">${starsHtml}</div>
+        <span class="rating-empty">No reviews yet</span>
+      </div>
+    `;
+  }
+
+  const rounded = ratingValue.toFixed(1);
+  return `
+    <div class="rating" aria-label="Average rating ${rounded} out of 5 from ${reviews} reviews">
+      <div class="stars">${starsHtml}</div>
+      <span class="rating-value">${rounded}</span>
+      <span class="rating-count">(${reviews})</span>
+    </div>
+  `;
+}
+
 function renderProducts(products) {
   const list = document.getElementById('product-list');
   list.innerHTML = "";
@@ -54,12 +95,16 @@ function renderProducts(products) {
     const div = document.createElement('div');
     div.className = 'card';
     const imgSrc = p.image ? `${p.image}` : 'image/no-image.png';
+  const ratingMarkup = createRatingMarkup(p.average_rating, p.review_count);
+  const priceNumber = Number(p.price) || 0;
+  const priceDisplay = priceNumber.toLocaleString('th-TH');
 
     div.innerHTML = `
       <img src="${imgSrc}" alt="${p.name}">
       <h3>${p.name}</h3>
+      ${ratingMarkup}
       <p class="category">${p.category || '-'}</p>
-      <p class="price">${p.price} ฿</p>
+  <p class="price">${priceDisplay} ฿</p>
       <button onclick="viewProduct(${p.id})">View Detail</button>
     `;
     list.appendChild(div);

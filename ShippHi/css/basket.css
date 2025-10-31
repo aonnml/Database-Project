@@ -1,7 +1,3 @@
-/* ===========================
-   Pink & White Modern Cart Style
-   =========================== */
-
 body {
   font-family: 'Prompt', 'Poppins', sans-serif;
   background: linear-gradient(135deg, #ff9bb2, #ff6f75);
@@ -17,9 +13,6 @@ h1 {
   font-weight: 600;
 }
 
-/* =======================
-   Cart List
-   ======================= */
 .cart-grid {
   display: flex;
   flex-direction: column;
@@ -29,9 +22,6 @@ h1 {
   padding: 0 20px;
 }
 
-/* =======================
-   Cart Item Box
-   ======================= */
 .cart-item {
   display: grid;
   grid-template-columns: 40px 80px 1fr 100px 40px;
@@ -266,4 +256,24 @@ button#checkoutBtn[disabled] {
 /* Responsive */
 @media (max-width: 480px) {
   .topbar__title { display: none; }
+}
+
+/* ปุ่มย้อนกลับ */
+.back-btn {
+  background-color: #ff7f9b;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 8px 15px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(255, 120, 150, 0.3);
+  transition: 0.25s;
+}
+.back-btn:hover {
+  background-color: #e56993;
+  box-shadow: 0 6px 14px rgba(255, 120, 150, 0.4);
 }
