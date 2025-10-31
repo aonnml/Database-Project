@@ -31,7 +31,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("ssssss", $name, $lastname, $address, $phoneNum, $email, $password_hashed);
 
 if ($stmt->execute()) {
-    echo "<script>alert('Register successful!'); window.location.href='../product.html';</script>";
+    echo "<script>alert('Register successful!'); window.location.href='../login.html';</script>";
 } else {
     echo "Error: " . $stmt->error;
 }
