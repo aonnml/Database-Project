@@ -121,10 +121,16 @@
 
 
     document.getElementById('done-payment').addEventListener('click', () => {
+      if (!Array.isArray(selectedIds) || selectedIds.length === 0) {
+        alert('ไม่พบสินค้าที่เลือก กรุณากลับไปหน้าตะกร้า');
+        return;
+      }
+
       fetch('backend/checkout.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ cartItems })
+        credentials: 'include',
+        body: JSON.stringify({ cartIds: selectedIds })
       })
       .then(res => res.json())
       .then(data => {
